@@ -8,7 +8,7 @@
     class="opacity-0"
     @refresh="onRefresh"
   >
-    <div class="h-full overflow-y-auto scrollbar-hide">
+    <div ref="scroll" class="h-full overflow-y-auto scrollbar-hide">
 
       <div
         v-for="(message, index) in messages"
@@ -47,7 +47,7 @@ export default {
           // this.$refs.areaRef.scrollTop = this.$refs.areaRef.scrollHeight;
           if(!old.length) {
             // Thay đổi lần đầu tiên
-            this.$el.scrollTop = this.$el.scrollHeight;
+            this.$refs.scroll.scrollTop = this.$refs.scroll.scrollHeight;
             setTimeout(() => {
               this.$anime({
                 targets: this.$el.querySelectorAll('.chat-item'),
@@ -58,7 +58,7 @@ export default {
             }, 100);
           } else {
             // khi thêm tin nhắn
-            this.$el.scrollTop = this.$el.scrollHeight;
+            this.$refs.scroll.scrollTop = this.$refs.scroll.scrollHeight;
             this.$anime({
               targets: this.$el.querySelectorAll('.chat-item')[current.length - 1],
               opacity: [0, 1],
