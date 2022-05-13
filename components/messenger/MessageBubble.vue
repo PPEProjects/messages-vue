@@ -10,7 +10,7 @@
 
     <div v-else class="w-[70px] flex-shrink-0"></div>
 
-    <label class="w-full bubble-content bg-[#f4f7fb] px-5 rounded-xl py-3 text-[13px] relative chap-content cursor-pointer text-gray-700">
+    <label class="w-full bubble-content bg-[#f4f7fb] px-5 rounded-xl py-3 text-[13px] relative chap-content cursor-pointer text-gray-700" style="overflow-wrap: anywhere;">
       <input class="hidden" type="checkbox">
       {{ message.content }}
       <span

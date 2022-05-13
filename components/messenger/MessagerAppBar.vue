@@ -11,7 +11,7 @@
     <template #title>
       <div id="room-users" class="flex justify-center px-5 cursor-pointer" @click="showRoomInfo()">
         <div
-          v-for="(user, index) in roomGet.users"
+          v-for="(user, index) in members"
           :key="user.id"
           :data-index="index"
           class="w-9 h-9 bg-white rounded-full border-2 border-white overflow-hidden mx-[-5px]"
@@ -35,15 +35,9 @@ import {GET_ROOM} from "~/apollo/queries/room.queries";
 
 export default {
   name: "MessagerAppBar",
-  data() {
-    return {
-      roomGet: {
-        users: []
-      }
-    }
-  },
   computed: {
     ...mapGetters('user', ['user']),
+    ...mapGetters('room', ['room', 'members']),
   },
   apollo: {
     roomGet: {
@@ -53,14 +47,35 @@ export default {
           roomId: this.$route.params.id,
           userId: String(this.user.id)
         }
+      },
+      fetchPolicy: 'cache-only',
+      manual: true,
+      result({ data }) {
+        if(data && data.roomGet) {
+          this.$store.dispatch('room/setRoom', data.roomGet);
+        }
       }
     }
   },
+  mounted() {
+    this.$nextTick(() => this.getRoom())
+  },
   methods: {
     showRoomInfo() {
-      if(this.roomGet.users.length) {
+      if(this.members.length) {
         this.$nuxt.$emit("showRoomInfo");
       }
+    },
+    async getRoom() {
+      try {
+        await this.$apollo.query({
+          query: GET_ROOM,
+          variables: {
+            roomId: this.$route.params.id,
+            userId: String(this.user.id)
+          }
+        });
+      } catch (e) {}
     }
   }
 }

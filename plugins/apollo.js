@@ -43,6 +43,15 @@ export default ({ store, redirect }) => {
 
     getAuth: () => 'Bearer ' + process.env.API_KEY,
 
+    defaultOptions: {
+      // See 'apollo' definition
+      // For example: default query options
+      $query: {
+        loadingKey: 'loading',
+        fetchPolicy: 'network-only',
+      },
+    },
+
     // override HTTP endpoint in browser only
     // browserHttpEndpoint: '/graphql',
 

@@ -31,15 +31,15 @@
               <div
                 class="w-8 h-8 rounded-full border-2 border-white absolute bg-primary-500 flex items-center justify-center text-[14px] text-white shadow-lg bottom-0 right-0"
               >
-                {{ roomGet.users.length }}
+                {{ members.length }}
               </div>
             </div>
 
             <div class="pl-4 h-full flex flex-col justify-center w-full">
-              <h5 class="line-clamp-2">{{ roomGet.name || 'Chat Room' }}</h5>
+              <h5 class="line-clamp-2">{{ room.name || 'Chat Room' }}</h5>
               <div class="text-gray-400 text-sm mt-1">
                 Created At:
-                {{ $dayjs(roomGet.createdAt).format('YYYY-MM-DD HH:mm') }}
+                {{ $dayjs(room.createdAt).format('YYYY-MM-DD HH:mm') }}
               </div>
             </div>
 
@@ -57,7 +57,7 @@
             <van-tab title="Members">
               <div id="membersList" class="w-full mt-2">
                 <members-item
-                  v-for="(user, index) in roomGet.users"
+                  v-for="(user, index) in members"
                   :key="user.id"
                   :data-index="index"
                   :member="user"
@@ -75,33 +75,19 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { GET_ROOM } from '~/apollo/queries/room.queries'
 
 export default {
   name: 'RoomInfo',
   data() {
     return {
       show: false,
-      roomGet: {
-        users: [],
-      },
       left: 0,
       active: 0,
     }
   },
   computed: {
     ...mapGetters('user', ['user']),
-  },
-  apollo: {
-    roomGet: {
-      query: GET_ROOM,
-      variables() {
-        return {
-          roomId: this.$route.params.id,
-          userId: String(this.user.id),
-        }
-      },
-    },
+    ...mapGetters('room', ['room', 'members']),
   },
   mounted() {
     this.$nuxt.$on('showRoomInfo', () => {

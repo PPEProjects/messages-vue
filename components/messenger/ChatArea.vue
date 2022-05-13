@@ -1,16 +1,26 @@
 <template>
-  <div class="h-full overflow-y-auto scrollbar-hide opacity-0">
 
-    <div
-      v-for="(message, index) in messages"
-      :key="message.id"
-      :data-index="index"
-      class="px-4"
-    >
-      <message-bubble :message="message"/>
+  <van-pull-refresh
+    v-model="isLoading"
+    loading-text="Loading..."
+    loosing-text="Release to load more"
+    pulling-text="Pull to load more"
+    class="opacity-0"
+    @refresh="onRefresh"
+  >
+    <div class="h-full overflow-y-auto scrollbar-hide">
+
+      <div
+        v-for="(message, index) in messages"
+        :key="message.id"
+        :data-index="index"
+        class="px-4"
+      >
+        <message-bubble :message="message"/>
+      </div>
+
     </div>
-
-  </div>
+  </van-pull-refresh>
 </template>
 
 <script>
@@ -90,15 +100,39 @@ export default {
             filter: {
               roomID: this.$route.params.id,
               limit: 10,
-              offset: 0
+              offset: this.messages.length
             }
-          }
+          },
+          fetchPolicy: 'network-only'
         })
-        await this.$store.dispatch('room/setMessages', data.messagesByRoom)
+        const _mess = structuredClone(this.messages)
+        await this.$store.dispatch('room/setMessages', [...data.messagesByRoom, ..._mess])
       } catch (e) {}
       this.$nuxt.$loading.finish()
       this.isLoading = false
-    }
+    },
+    async onRefresh() {
+      const _oldlength = this.messages.length
+      await this.getMessages()
+      const _newlength = this.messages.length
+
+      // có dữ liệu
+      if(_oldlength !== _newlength) {
+        const $els = this.$el.querySelectorAll('.chat-item')
+        const arr = []
+        for(let i = 0; i < _newlength - _oldlength; i++) {
+          arr.push($els[i])
+        }
+        console.log(arr)
+        this.$anime({
+          targets: arr,
+          opacity: [0, 1],
+          translateY: [-50, 0],
+          delay: this.$anime.stagger(100)
+        })
+      }
+
+    },
 
   }
 }

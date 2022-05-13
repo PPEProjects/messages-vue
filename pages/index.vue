@@ -8,8 +8,8 @@
         <img class="rounded-full" width="35px" height="35px" src="/images/logo.jpeg" alt="" />
       </template>
       <template #right>
-        <van-icon v-if="!showSearch" name="search" />
-        <van-icon v-else name="cross" />
+        <van-icon v-if="!showSearch" size="16" name="search" />
+        <van-icon v-else size="16" name="cross" />
       </template>
     </van-nav-bar>
 
@@ -42,6 +42,9 @@ import {SUB_MY_ROOMS} from "~/apollo/subscription/room.subscription";
 
 export default {
   name: 'IndexPage',
+  asyncData({ app }) {
+    app.store.dispatch("home/setRooms", []);
+  },
   data() {
     return {
       keyword: '',
@@ -145,7 +148,8 @@ export default {
               limit: 10,
               offset: this.offset
             }
-          }
+          },
+          fetchPolicy: 'network-only'
         })
         if(data.getRooms.length) {
           await this.$store.dispatch('home/setRooms', data.getRooms)

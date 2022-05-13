@@ -22,6 +22,9 @@ import {SUB_USER_ONLINE} from "~/apollo/subscription/room.subscription";
 
 export default {
   name: "MessengerRoom",
+  asyncData({ app }) {
+    app.store.dispatch("room/setMessages", []);
+  },
   data() {
     return {
       isLoading: false

@@ -1,12 +1,10 @@
 <template>
 
-  <van-swipe-cell :before-close="beforeClose" :disabled="roomGet.users.length <= 2">
+  <van-swipe-cell :before-close="beforeClose" :disabled="member.length <= 2">
     <div class="py-3 border-b last:border-0 border-gray-100 flex items-center cursor-pointer">
-      <div class="relative flex-shrink-0">
-        <a class="relative z-10 w-16 h-16 rounded-full overflow-hidden border-4 border-white shadow-md block" href="/profile/47475">
-          <img class="animate image-hover-zoom w-full h-full object-cover" src="https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/1021.jpg" alt="">
-        </a>
-      </div>
+
+      <avatar-border :onlines="isOnline ? 1 : 0" class="relative flex-shrink-0" avatar-class="w-16 h-16 border-4" />
+
       <div class="w-full ml-4 mr-auto">
         <div>
           <h4 class="font-medium text-[15px] line-clamp-1">
@@ -30,7 +28,6 @@
 
 <script>
 import {mapGetters} from "vuex";
-import {GET_ROOM} from "~/apollo/queries/room.queries";
 import {KICK_MEMBERS} from "~/apollo/mutation/message.mutation";
 
 export default {
@@ -41,26 +38,12 @@ export default {
       required: true
     }
   },
-  data() {
-    return {
-      roomGet: {
-        users: []
-      },
-    }
-  },
-  apollo: {
-    roomGet: {
-      query: GET_ROOM,
-      variables() {
-        return {
-          roomId: this.$route.params.id,
-          userId: this.$store.state.user.id
-        }
-      },
-    }
-  },
   computed: {
     ...mapGetters('user', ['user']),
+    ...mapGetters('room', ['members', 'onlines']),
+    isOnline() {
+      return this.onlines.includes(this.member.userID);
+    },
   },
   methods: {
     beforeClose({ position, instance }) {
