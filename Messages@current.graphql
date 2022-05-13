@@ -1,0 +1,221 @@
+"""
+Direct the client to resolve this field locally, either from the cache or local resolvers.
+"""
+directive @client(
+  """
+  When true, the client will never use the cache for this value. See
+  https://www.apollographql.com/docs/react/essentials/local-state/#forcing-resolvers-with-clientalways-true
+  """
+  always: Boolean
+) on FIELD | FRAGMENT_DEFINITION | INLINE_FRAGMENT
+
+"""
+Specify a custom store key for this result. See
+https://www.apollographql.com/docs/react/advanced/caching/#the-connection-directive
+"""
+directive @connection(
+  """Specify the store key."""
+  key: String!
+
+  """
+  An array of query argument names to include in the generated custom store key.
+  """
+  filter: [String!]
+) on FIELD
+
+"""
+Export this locally resolved field as a variable to be used in the remainder of this query. See
+https://www.apollographql.com/docs/react/essentials/local-state/#using-client-fields-as-variables
+"""
+directive @export(
+  """The variable name to export this field as."""
+  as: String!
+) on FIELD
+
+input AddToRoomInput {
+  roomID: String!
+  userIDs: [String!]!
+}
+
+input CreateConnectInput {
+  """Thông tin của thành viên"""
+  user: CreateUserInput!
+}
+
+input CreateLicenseInput {
+  """Mã định danh app"""
+  appID: String!
+}
+
+input CreateMessageInput {
+  """User ID người gửi"""
+  from: String!
+
+  """Nội dung tin nhắn"""
+  content: String
+}
+
+input CreateRoomInput {
+  """Tên nhóm"""
+  name: String
+
+  """Ảnh đại diện"""
+  avatar: String
+
+  """Mảng userID"""
+  users: [String!]!
+}
+
+input CreateUserInput {
+  """tên người dùng"""
+  name: String!
+
+  """ảnh đại diện người dùng"""
+  avatar: String!
+
+  """id người dùng thật"""
+  userID: String!
+}
+
+input GetMessagesInput {
+  """Room ID"""
+  roomID: String!
+
+  """Giới hạn"""
+  limit: Int!
+
+  """Skip"""
+  offset: Int!
+}
+
+input GetRoomsInput {
+  userID: String!
+
+  """Giới hạn"""
+  limit: Int!
+
+  """Skip"""
+  offset: Int!
+}
+
+input KickRoomInput {
+  roomID: String!
+  userIDs: [String!]!
+}
+
+type License {
+  id: ID!
+
+  """Mã định danh app"""
+  appID: String!
+
+  """Ngày tạo license"""
+  createdAt: Float!
+}
+
+type Message {
+  id: ID!
+  from: User!
+  content: String!
+  room: Room!
+  license: License!
+  readAt: [ReadAt!]!
+  createdAt: Float!
+}
+
+type Mutation {
+  licenseCreate(input: CreateLicenseInput!): Token!
+  userCreate(input: CreateUserInput!): User!
+  upsertUsers(input: UpsertUsersInput!): [User!]!
+  userUpdate(
+    input: UpdateUserInput!
+
+    """User ID"""
+    userID: String!
+  ): User!
+  userRemove(userID: String!): User!
+  messageSend(input: CreateMessageInput!, roomId: String!): Message!
+  messageRead(input: ReadMessageInput!): [Message!]!
+  roomCreate(input: CreateRoomInput!): Room!
+  roomKick(input: KickRoomInput!): Room!
+  roomAdd(input: AddToRoomInput!): Room!
+}
+
+type Query {
+  version: String!
+  userOnline(userID: String!): UserOnline!
+  messagesByRoom(filter: GetMessagesInput!): [Message!]!
+  getRooms(input: GetRoomsInput!): [RoomMessages!]!
+  roomGet(roomID: String!, userID: String!): Room!
+}
+
+type ReadAt {
+  user: User!
+  time: Float!
+}
+
+input ReadMessageInput {
+  """Điểm neo"""
+  anchor: String!
+
+  """ID người đọc"""
+  userID: String!
+}
+
+type Room {
+  id: ID!
+  name: String!
+  avatar: String
+  users: [User!]!
+  createdAt: Float!
+  updatedAt: Float
+}
+
+type RoomMessages {
+  room: Room!
+  messages: [Message!]!
+}
+
+type RoomOnlines {
+  room: Room!
+  onlines: [String!]!
+}
+
+type Subscription {
+  connect(input: CreateConnectInput!): User!
+  subUserOnline(userID: String!): UserOnline!
+  roomSubMessage(roomID: String!, userID: String!): Message!
+  roomOnlines(roomID: String!, userID: String!): RoomOnlines!
+  subMyRooms(userID: String!): RoomMessages!
+}
+
+type Token {
+  token: String!
+}
+
+input UpdateUserInput {
+  """tên người dùng"""
+  name: String
+
+  """ảnh đại diện người dùng"""
+  avatar: String
+}
+
+input UpsertUsersInput {
+  users: [CreateUserInput!]!
+}
+
+type User {
+  id: ID!
+  name: String!
+
+  """User ID thật"""
+  userID: String!
+  avatar: String
+  createdAt: Float!
+}
+
+type UserOnline {
+  user: User!
+  isOnline: Boolean!
+}
