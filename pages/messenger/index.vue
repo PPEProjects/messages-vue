@@ -72,4 +72,7 @@ export default {
 #messenger .messInput:after {
   display: none;
 }
+.images-bubble .van-grid-item__content {
+  padding: 8px 8px;
+}
 </style>

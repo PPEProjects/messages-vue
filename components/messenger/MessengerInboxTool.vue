@@ -1,7 +1,7 @@
 <template>
 
   <div>
-    <div class="absolute bottom-0 px-4 py-2 border-t border-gray-100 w-full z-10">
+    <div class="absolute bottom-0 px-4 py-2 border-t border-gray-100 w-full z-10 bg-white">
       <div class="w-full bg-gray-50 px-3 py-2 flex items-center rounded-[30px]">
         <button class="w-[18px] h-[18px]">
           <svg class="fill-current text-gray-500" width="18" height="18">

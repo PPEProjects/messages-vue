@@ -8,7 +8,7 @@
     class="opacity-0"
     @refresh="onRefresh"
   >
-    <div ref="scroll" class="h-full overflow-y-auto scrollbar-hide">
+    <div ref="scroll" class="h-full overflow-y-auto scrollbar-hide pb-9">
 
       <div
         v-for="(inbox, index) in inboxs"
@@ -16,7 +16,17 @@
         :data-index="index"
         class="px-4"
       >
-        <message-bubble v-if="inbox.content" :message="inbox"/>
+        <message-bubble :message="inbox">
+
+          <template v-if="inbox.content">
+            {{ inbox.content }}
+          </template>
+
+          <images-bubble v-else-if="inbox.images" :images="inbox.images" />
+
+          <file-bubble v-else-if="inbox.file" :file="inbox.file" />
+
+        </message-bubble>
       </div>
 
     </div>
@@ -40,7 +50,7 @@ export default {
     ...mapGetters('room', ['messages', 'inboxs']),
   },
   watch: {
-    messages: {
+    inboxs: {
       handler(current, old) {
         this.$nextTick(() => {
           // scroll to bottom
@@ -71,7 +81,7 @@ export default {
     }
   },
   mounted() {
-    this.$nextTick(() => this.getMessages())
+    // this.$nextTick(() => this.getMessages())
     this.$nextTick(() => this.getInboxs())
   },
   apollo: {
@@ -145,12 +155,12 @@ export default {
             filter: {
               roomID: this.$route.params.id,
               limit: 10,
-              offset: this.messages.length
+              offset: this.inboxs.length
             }
           },
           fetchPolicy: 'no-cache'
         })
-        const _mess = structuredClone(this.messages)
+        const _mess = structuredClone(this.inboxs)
 
         await this.$store.dispatch('room/setInboxs', [...data.inboxsGet, ..._mess])
 

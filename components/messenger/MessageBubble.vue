@@ -1,18 +1,26 @@
 <template>
-  <div class="flex my-10 items-start chat-item opacity-0" :data-current="isOwn" :data-id="message.id">
+  <div
+    class="flex my-10 items-start chat-item opacity-0"
+    :data-current="isOwn"
+    :data-id="message.id"
+    :class="{
+          '_content': message.content,
+          '_images': message.images,
+          '_images _file': message.file,
+          'flex-row-reverse': isOwn
+    }"
+  >
 
-    <div v-if="!isOwn" class="w-[70px] flex-shrink-0 chat-user">
+    <div class="w-[70px] flex-shrink-0 chat-user">
       <div class="w-[50px] h-[50px] rounded-full overflow-hidden border-[3px] border-white shadow-lg"><img
         class="w-full h-full object-cover"
         src="https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/454.jpg" alt="">
       </div>
     </div>
 
-    <div v-else class="w-[70px] flex-shrink-0"></div>
-
-    <label class="w-full bubble-content bg-[#f4f7fb] px-5 rounded-xl py-3 text-[13px] relative chap-content cursor-pointer text-gray-700" style="overflow-wrap: anywhere;">
+    <label class="bubble-content bg-[#f4f7fb] px-5 rounded-xl py-3 text-[13px] relative chap-content cursor-pointer text-gray-700" style="overflow-wrap: anywhere;">
       <input class="hidden" type="checkbox">
-      {{ message.content }}
+      <slot></slot>
       <span
         class="flex items-center text-gray-500 flex-shrink-0 opacity-0 absolute -bottom-5 _read left-0 animate">
         <svg
@@ -25,14 +33,7 @@
       </span>
     </label>
 
-    <div v-if="isOwn" class="w-[70px] flex-shrink-0 chat-user">
-      <div class="w-[50px] h-[50px] rounded-full overflow-hidden border-[3px] border-white shadow-lg"><img
-        class="w-full h-full object-cover"
-        src="https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/454.jpg" alt="">
-      </div>
-    </div>
-
-    <div v-else class="w-[70px] flex-shrink-0"></div>
+    <div class="w-[70px] flex-shrink-0"></div>
 
   </div>
 </template>
