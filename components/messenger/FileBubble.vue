@@ -1,8 +1,8 @@
 <template>
-  <div>
-    <div class="px-0.5">
+  <div class="file-bubble">
+    <div class="px-0.5" @click="download">
       <van-icon name="volume-o" class="mr-1" />
-      {{ fileName }}
+      <span class="file-name">{{ fileName }}</span>
     </div>
   </div>
 </template>
@@ -15,6 +15,10 @@ export default {
       type: String,
       required: true
     },
+    downloadEnabled: {
+      type: Boolean,
+      default: true
+    }
   },
   computed: {
     fileName() {
@@ -22,6 +26,14 @@ export default {
     },
     fileExtention() {
       return this.fileName.split('.')[this.fileName.split('.').length - 1]
+    }
+  },
+  methods: {
+    download() {
+      if(!this.downloadEnabled) {
+        return
+      }
+      window.open(this.file, '_blank').focus();
     }
   }
 }

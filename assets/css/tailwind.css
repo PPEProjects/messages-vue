@@ -91,3 +91,11 @@ button.ant-btn-sm > svg {
 .chat-item._images:not(._file) .bubble-content {
   width: 100%;
 }
+
+#messageInput .file-bubble .file-name {
+  font-size: 13px;
+}
+
+#messageInput .file-bubble {
+  color: #374151;
+}

@@ -31,3 +31,19 @@ export const KICK_MEMBERS = gql`
     }
   }
 `
+
+export const SEND_IMAGES = gql`
+  mutation ImageMessageSend($input: CreateImageInput!, $roomId: String!) {
+    imageMessageSend(input: $input, roomId: $roomId) {
+      id
+    }
+  }
+`
+
+export const SEND_FILE = gql`
+  mutation FileCreate($input: CreateFileInput!, $roomId: String!) {
+    fileCreate(input: $input, roomId: $roomId) {
+      id
+    }
+  }
+`

@@ -44,7 +44,8 @@ export default {
     'portal-vue/nuxt',
     '@nuxtjs/apollo',
     'cookie-universal-nuxt',
-    '@nuxtjs/dayjs'
+    '@nuxtjs/dayjs',
+    '@nuxtjs/proxy'
   ],
 
   loading: { color: '#3b66f5', height: '3px', throttle: 0 },
@@ -68,9 +69,17 @@ export default {
     includeNodeModules: true
   },
 
-  // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
-    // Workaround to avoid enforcing hard-coded localhost:3000: https://github.com/nuxt-community/axios-module/issues/308
+    proxy: true // Can be also an object with default options
+  },
+
+  proxy: {
+    '/bunny/': {
+      target: process.env.VITE_BUNNY_URL,
+      pathRewrite: {
+        '^/bunny/': ''
+      }
+    }
   },
 
   // PWA module configuration: https://go.nuxtjs.dev/pwa
