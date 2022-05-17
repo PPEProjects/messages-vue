@@ -9,7 +9,7 @@
         :id="$route.name"
         class="text-slate-900 relative min-h-screen"
       >
-        <nuxt />
+        <nuxt :key="$route.path" />
       </div>
     </div>
 

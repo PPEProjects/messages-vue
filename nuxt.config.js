@@ -12,13 +12,15 @@ export default {
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
-  css: ['vant/lib/index.css'],
+  css: [{ src: '@/assets/less/vant.less', lang: 'less' }],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
     '@/plugins/vant',
     { src: '@/plugins/anime', ssr: false },
-    '@/plugins/axios'
+    '@/plugins/axios',
+    { src: '~/plugins/lottie.js', ssr: false },
+    '@/plugins/vue-signature-pad'
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -79,7 +81,7 @@ export default {
   },
 
   router: {
-    // middleware: 'auth',
+    middleware: 'auth',
     extendRoutes(routes, resolve) {
       routes.forEach((route) => {
         if (route.name === 'messenger') {

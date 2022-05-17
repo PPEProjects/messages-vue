@@ -3,7 +3,6 @@
     <van-nav-bar
       title="Smileeye Messages"
       z-index="40"
-      @click-right="showSearch = !showSearch"
     >
       <template #left>
         <img class="rounded-full" width="35px" height="35px" src="/images/logo.jpeg" alt="" />
@@ -53,7 +52,7 @@
 
         <div v-else>
 
-          <search-results v-if="searchResults.length" v-model="choices" :users="searchResults" />
+          <search-results v-if="searchResults.length" v-model="choices" :users="searchResults.filter((e) => e.id !== user.id)" />
 
           <div v-else>
             <img class="max-w-[200px] mx-auto block" src="/images/cat-cry.jpg" alt="" />
@@ -237,24 +236,44 @@ export default {
     },
 
     async createGroup() {
+
+      if(this.choices.length < 2) {
+        return
+      }
+
       this.$nuxt.$loading.start()
+      this.isCreatingGroup = true
       try {
+
+        const _users = this.choices.map((e) => (
+          {
+            name: e.name,
+            avatar: e.avatar,
+            userID: String(e.id)
+          }
+        ))
+
+        _users.push({
+          name: this.user.name,
+          avatar: this.user.avatar,
+          userID: String(this.user.id)
+        })
+
         const { data } = await this.$apollo.mutate({
           mutation: UPSERT_GROUP,
           variables: {
             input: {
-              users: this.choices.map((e) => (
-                {
-                  name: e.name,
-                  avatar: e.avatar,
-                  userID: String(e.id)
-                }
-              ))
+              users: _users
             }
           }
         })
-        console.log(data)
+        this.$notify({
+          type: 'success',
+          message: 'Create room successfully!'
+        })
+        await this.$router.push({name: 'messenger', params: { id: data.roomUpsert.id }})
       } catch (e) {}
+      this.isCreatingGroup = false
       this.$nuxt.$loading.finish()
     },
 

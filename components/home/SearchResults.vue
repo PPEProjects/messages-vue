@@ -66,13 +66,15 @@ export default {
               translateY: [0, this.transformY],
             })
 
-            this.$anime({
-              targets: '.add-group-button',
-              opacity: [0, 1],
-              scale: [0, 1]
-            })
-
           })
+        } else if (prev.length === 1 && value.length === 2) {
+
+          this.$anime({
+            targets: '.add-group-button',
+            opacity: [0, 1],
+            scale: [0, 1]
+          })
+
         } else if(value.length === 0 && prev.length) {
           this.$nextTick(() => {
             this.$anime({
@@ -81,14 +83,14 @@ export default {
               translateY: [this.transformY, 0],
             })
 
-            this.$anime({
-              targets: '.add-group-button',
-              opacity: [1, 0],
-              scale: [1, 0],
-              easing: 'linear',
-              duration: 200
-            })
-
+          })
+        } else if (prev.length === 2 && value.length === 1) {
+          this.$anime({
+            targets: '.add-group-button',
+            opacity: [1, 0],
+            scale: [1, 0],
+            easing: 'linear',
+            duration: 200
           })
         }
         this.$emit('input', this.choices)

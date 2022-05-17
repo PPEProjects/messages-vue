@@ -42,6 +42,22 @@ input CreateConnectInput {
   user: CreateUserInput!
 }
 
+input CreateFileInput {
+  """User ID người gửi"""
+  from: String!
+
+  """link file"""
+  file: String
+}
+
+input CreateImageInput {
+  """User ID người gửi"""
+  from: String!
+
+  """Hình ảnh tin nhắn"""
+  images: [String!]!
+}
+
 input CreateLicenseInput {
   """Mã định danh app"""
   appID: String!
@@ -53,6 +69,14 @@ input CreateMessageInput {
 
   """Nội dung tin nhắn"""
   content: String
+}
+
+input CreateNoteInput {
+  """User ID người gửi"""
+  from: String!
+
+  """Nọi dung gi chú"""
+  note: String!
 }
 
 input CreateRoomInput {
@@ -77,6 +101,26 @@ input CreateUserInput {
   userID: String!
 }
 
+type File {
+  id: ID!
+  from: User!
+  room: Room!
+  license: License!
+  createdAt: Float!
+  file: String!
+}
+
+input GetInboxsInput {
+  """Room ID"""
+  roomID: String!
+
+  """Giới hạn"""
+  limit: Int!
+
+  """Skip"""
+  offset: Int!
+}
+
 input GetMessagesInput {
   """Room ID"""
   roomID: String!
@@ -98,6 +142,15 @@ input GetRoomsInput {
   offset: Int!
 }
 
+type Image {
+  id: ID!
+  from: User!
+  room: Room!
+  license: License!
+  createdAt: Float!
+  images: [String!]!
+}
+
 input KickRoomInput {
   roomID: String!
   userIDs: [String!]!
@@ -116,11 +169,11 @@ type License {
 type Message {
   id: ID!
   from: User!
-  content: String!
   room: Room!
   license: License!
-  readAt: [ReadAt!]!
   createdAt: Float!
+  content: String!
+  readAt: [ReadAt!]!
 }
 
 type Mutation {
@@ -140,6 +193,18 @@ type Mutation {
   roomUpsert(input: UpserRoomInput!): Room!
   roomKick(input: KickRoomInput!): Room!
   roomAdd(input: AddToRoomInput!): Room!
+  fileCreate(input: CreateFileInput!, roomId: String!): File!
+  imageMessageSend(input: CreateImageInput!, roomId: String!): Image!
+  noteCreate(input: CreateNoteInput!, roomId: String!): Note!
+}
+
+type Note {
+  id: ID!
+  from: User!
+  room: Room!
+  license: License!
+  createdAt: Float!
+  note: String!
 }
 
 type Query {
@@ -148,6 +213,7 @@ type Query {
   messagesByRoom(filter: GetMessagesInput!): [Message!]!
   getRooms(input: GetRoomsInput!): [RoomMessages!]!
   roomGet(roomID: String!, userID: String!): Room!
+  inboxsGet(filter: GetInboxsInput!): [ResultUnion!]!
 }
 
 type ReadAt {
@@ -162,6 +228,8 @@ input ReadMessageInput {
   """ID người đọc"""
   userID: String!
 }
+
+union ResultUnion = Message | Image | File
 
 type Room {
   id: ID!

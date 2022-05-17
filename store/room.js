@@ -1,7 +1,8 @@
 export const state = () => ({
   onlines: [],
   messages: [],
-  room: {}
+  room: {},
+  inboxs: []
 })
 
 // getters
@@ -10,6 +11,7 @@ export const getters = {
   messages: (state) => state.messages,
   room: (state) => state.room,
   members: state => state.room.users || [],
+  inboxs: state => state.inboxs
 }
 
 // mutations
@@ -22,6 +24,10 @@ export const mutations = {
   },
   SET_ROOM(state, data) {
     state.room = data
+  },
+
+  SET_INBOXS(state, data) {
+    state.inboxs = data
   }
 }
 
@@ -36,5 +42,8 @@ export const actions = {
   },
   setRoom({ commit }, payload) {
     commit('SET_ROOM', payload)
+  },
+  setInboxs({ commit }, payload) {
+    commit('SET_INBOXS', payload)
   }
 }

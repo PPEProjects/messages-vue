@@ -1,14 +1,21 @@
 <template>
-  <modal-base ref="modal" title="Đăng Nhập" event="authModal" :max-width="450">
-    <template #default>
-      <div class="mt-5 mb-3" style="height: 180px;">
-        <img src="/images/login.png" alt="" class="h-full w-auto mx-auto block">
+  <modal-base ref="modal" title="Login" event="authModal" :max-width="450">
+    <template #default="{ show }">
+      <div style='width: 180px; height: 180px' class='mx-auto mt-3'>
+        <template v-if='show'>
+          <v-lottie-player
+            width='180px'
+            height='180px'
+            loop
+            path="https://assets8.lottiefiles.com/packages/lf20_unycsfzn.json"
+          />
+        </template>
+        <div v-else></div>
       </div>
       <div class="text-center">
-        <small class="text-xs italic opacity-90 text-gray-400">Tham gia cộng đồng truyện tranh tại Việt
-          Nam</small>
+        <small class="text-xs italic opacity-90 text-gray-400">Experience to learn</small>
       </div>
-      <form id="authForm" class="max-w-xs mx-auto">
+      <form id="authForm" class="max-w-xs mx-auto" @submit.prevent="login()">
         <div class="pb-2 pt-1 relative my-4">
           <div class="flex items-center">
             <label for="inputEmail" class="block mr-3">
@@ -34,7 +41,7 @@
               class="focus:outline-none block flex-1 bg-transparent text-sm  text-gray-600"
             > <a
               class="block text-xs text-primary-500 ml-3 cursor-pointer flex-shrink-0"
-            >Quên Mật Khẩu?</a>
+            >Forgot Password?</a>
           </div>
           <span
             class="block absolute w-full left-0 bottom-0 bg-gray-200 h-0.5 ease-in-out transition duration-300 bg-primary-600"
@@ -42,16 +49,19 @@
         </div>
         <div class="text-xs text-center my-1">
           <p class="text-gray-400">
-            Chưa Có Tài Khoản?<a
-              class="text-primary-500 cursor-pointer ml-1"
-            >Đăng Ký Ngay</a>
+            Don't have account?
+            <a class="text-primary-500 cursor-pointer ml-1">SignUp now</a>
           </p>
         </div>
+
+        <div class="h-2"></div>
+
+        <van-button round block size="small" type="primary">Login</van-button>
 
         <div>
           <div class="flex items-center mt-5">
             <span class="w-full h-px bg-gray-200" />
-            <span class="flex-shrink-0 text-xs font-medium text-gray-400 mx-3">HOẶC TIẾP TỤC VỚI</span>
+            <span class="flex-shrink-0 text-xs font-medium text-gray-400 mx-3">OR CONTINUE WITH</span>
             <span class="w-full h-px bg-gray-200" />
           </div>
           <div class="flex items-center justify-center mt-5">
@@ -65,7 +75,7 @@
         </div>
       </form>
       <div class="text-xs text-center mt-5 text-gray-400">
-        <span class="mr-1">© 2021 Comix</span>
+        <span class="mr-1">© 2022 PPE</span>
         <i>|</i>
         <span class="mx-1">Terms of Service</span>
         <i>|</i>
@@ -96,9 +106,13 @@ export default {
 
     async login() {
       try {
-        ///
-        await this.$apolloHelpers.onLogin('')
-      } catch (e) {}
+        const { data } = await this.$axios.$post('https://v2-be.smileeye.edu.vn/ppe-core/auth/login', { email: this.email, password: this.password})
+        await this.$cookies.set('_token', data.token)
+        this.$toast.success({ message: 'Success' })
+        window.location.reload()
+      } catch (e) {
+        this.$toast.fail({ message: 'Failed' })
+      }
     }
 
   }

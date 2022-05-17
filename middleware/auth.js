@@ -1,9 +1,9 @@
 export default ({ store, route, redirect }) => {
   if (store.getters['user/auth']) {
-    if (route.path === '/') {
-      redirect('/dashboard')
+    if (route.path === '/auth') {
+      redirect('/')
     }
   } else {
-    redirect('/')
+    redirect('/auth')
   }
 }

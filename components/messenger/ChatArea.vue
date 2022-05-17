@@ -11,12 +11,12 @@
     <div ref="scroll" class="h-full overflow-y-auto scrollbar-hide">
 
       <div
-        v-for="(message, index) in messages"
-        :key="message.id"
+        v-for="(inbox, index) in inboxs"
+        :key="inbox.id"
         :data-index="index"
         class="px-4"
       >
-        <message-bubble :message="message"/>
+        <message-bubble v-if="inbox.content" :message="inbox"/>
       </div>
 
     </div>
@@ -26,7 +26,7 @@
 <script>
 import {mapGetters} from "vuex";
 import {SUB_NEW_MESSAGE} from "~/apollo/subscription/room.subscription";
-import {GET_ROOM_MESSAGES} from "~/apollo/queries/room.queries";
+import {GET_INBOXS, GET_ROOM_MESSAGES} from "~/apollo/queries/room.queries";
 
 export default {
   name: "ChatArea",
@@ -37,7 +37,7 @@ export default {
   },
   computed: {
     ...mapGetters('user', ['user']),
-    ...mapGetters('room', ['messages']),
+    ...mapGetters('room', ['messages', 'inboxs']),
   },
   watch: {
     messages: {
@@ -72,6 +72,7 @@ export default {
   },
   mounted() {
     this.$nextTick(() => this.getMessages())
+    this.$nextTick(() => this.getInboxs())
   },
   apollo: {
     $subscribe: {
@@ -132,6 +133,30 @@ export default {
         })
       }
 
+    },
+
+    async getInboxs() {
+      this.isLoading = true
+      this.$nuxt.$loading.start()
+      try {
+        const { data } = await this.$apollo.query({
+          query: GET_INBOXS,
+          variables: {
+            filter: {
+              roomID: this.$route.params.id,
+              limit: 10,
+              offset: this.messages.length
+            }
+          },
+          fetchPolicy: 'no-cache'
+        })
+        const _mess = structuredClone(this.messages)
+
+        await this.$store.dispatch('room/setInboxs', [...data.inboxsGet, ..._mess])
+
+      } catch (e) {}
+      this.$nuxt.$loading.finish()
+      this.isLoading = false
     },
 
   }
