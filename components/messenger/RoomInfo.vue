@@ -9,7 +9,7 @@
       borderTopLeftRadius: '15px',
       borderTopRightRadius: '15px',
       maxWidth: '42rem',
-      left: left + 'px',
+      left: left + 'px'
     }"
   >
     <div id="roomInfoBody">
@@ -49,24 +49,64 @@
           </div>
         </div>
 
-        <div class="px-4">
-          <van-tabs
-            v-model="active"
-            class="border-t border-gray-100 room-info-tab"
-          >
-            <van-tab title="Members">
-              <div id="membersList" class="w-full mt-2">
-                <members-item
-                  v-for="(user, index) in members"
-                  :key="user.id"
-                  :data-index="index"
-                  :member="user"
-                />
-              </div>
-            </van-tab>
+        <div class="px-4 relative">
 
-            <van-tab title="Privacy"> Coming soon :))) </van-tab>
-          </van-tabs>
+          <div class="flex items-center relative z-20">
+            Members
+            <button v-if="!openSearch" class="ml-auto text-sm text-gray-300" @click="openSearch = true">
+              <span class="text-xs">Add</span>
+              <van-icon name="plus" />
+            </button>
+
+            <button v-if="openSearch" class="ml-auto text-sm text-gray-300" @click="openSearch = false">
+              <span class="text-xs">clear</span>
+              <van-icon name="cross" />
+            </button>
+
+          </div>
+
+          <div id="search-messages" ref="searchInputRef" class="absolute w-full top-0 left-0 z-10 opacity-0" :class="[openSearch ? '' : 'pointer-events-none']">
+            <van-search v-model="keyword" shape="round" placeholder="Search your friends" @search="onSearch" @clear="clearSearch" @input="!keyword && clearSearch()">
+              <template #left-icon>
+                <van-icon name="search" color="#cccccc" />
+              </template>
+            </van-search>
+          </div>
+
+
+          <div ref="body" class="relative">
+
+            <div id="membersList" ref="messagesRef" class="w-full mt-2" :class="[showSearch ? 'z-10 pointer-events-none' : 'z-20']">
+              <members-item
+                v-for="(user, index) in members"
+                :key="user.id"
+                :data-index="index"
+                :member="user"
+              />
+            </div>
+
+            <div ref="searchResult" class="bg-white top-0 left-0 absolute w-full opacity-0" :class="[showSearch ? 'z-20' : 'z-10 pointer-events-none']">
+
+              <div v-if="!showSearchResults">
+                <img class="max-w-[300px] mx-auto block" src="/images/search.webp" alt="" />
+                <div class="text-xs text-gray-500 text-center">Enter to search all results</div>
+              </div>
+
+              <div v-else>
+
+                <search-results v-if="searchResults.length" v-model="choices" :users="searchResults.filter((e) => e.id !== user.id)" />
+
+                <div v-else>
+                  <img class="max-w-[200px] mx-auto block" src="/images/cat-cry.jpg" alt="" />
+                  <div class="text-xs text-gray-500 text-center">Not found anyone !!!</div>
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
         </div>
       </div>
     </div>
@@ -75,19 +115,58 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import searchUsers from "~/plugins/mixins/searchUsers";
 
 export default {
   name: 'RoomInfo',
+  mixins: [searchUsers],
   data() {
     return {
       show: false,
       left: 0,
       active: 0,
+      openSearch: false
     }
   },
   computed: {
     ...mapGetters('user', ['user']),
     ...mapGetters('room', ['room', 'members']),
+    showSearch() {
+      return this.keyword.length > 0
+    }
+  },
+  watch: {
+    showSearch(val) {
+      this.playAnimation(val)
+    },
+    openSearch(val, prev) {
+      if(val !== prev) {
+        if(val) {
+          this.$anime({
+            targets: this.$refs.searchInputRef,
+            opacity: [0, 1],
+            translateY: [0, 25],
+          })
+          this.$anime({
+            targets: this.$refs.body,
+            translateY: [0, 40],
+          })
+        } else {
+
+          this.$anime({
+            targets: this.$refs.searchInputRef,
+            opacity: [1, 0],
+            translateY: [25, 0],
+          })
+          this.$anime({
+            targets: this.$refs.body,
+            translateY: [40, 0],
+          })
+
+        }
+
+      }
+    }
   },
   mounted() {
     this.$nuxt.$on('showRoomInfo', () => {
@@ -104,6 +183,36 @@ export default {
       const maxWidth = document.getElementById('body').scrollWidth
       this.left = (width - maxWidth) / 2
     },
+
+    playAnimation(val) {
+      if (val) {
+        this.$anime({
+          targets: this.$refs.messagesRef,
+          opacity: [1, 0],
+          translateY: [0, 50],
+        })
+
+        this.$anime({
+          targets: this.$refs.searchResult,
+          opacity: [0, 1],
+          translateY: [50, 0]
+        })
+
+      } else {
+
+        this.$anime({
+          targets: this.$refs.messagesRef,
+          opacity: [0, 1],
+          translateY: [50, 0]
+        })
+
+        this.$anime({
+          targets: this.$refs.searchResult,
+          opacity: [1, 0],
+          translateY: [0, 50],
+        })
+      }
+    }
   },
 }
 </script>

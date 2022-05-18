@@ -18,19 +18,38 @@
 
 
         <div v-if="attchEnable" class="w-full px-3">
-          <div v-if="imagesAttached" class="scrollbar-hide overflow-y-auto">
-            <van-image
+          <div v-if="imagesAttached" class="scrollbar-hide overflow-y-auto flex flex-wrap justify-evenly">
+            <div
               v-for="(image, index) in imagesPreview"
               :key="index"
-              class="rounded-md overflow-hidden mr-3 border-2 border-white shadow-md"
-              width="70"
-              height="70"
-              :src="image"
-              fit="cover"
-            />
+              class="inline-block relative"
+            >
+              <van-image
+                class="rounded-md overflow-hidden mx-1.5 border-2 border-white shadow-md z-10"
+                width="70"
+                height="70"
+                :src="image"
+                fit="cover"
+              />
+
+              <button class="absolute top-1 right-2.5 text-white bg-rose-500 w-5 h-5 rounded-full overflow-hidden border-2 border-white flex justify-center items-center shadow-md shadow-rose-300 z-20" @click="removeAt(index)">
+                <van-icon size="10" name="cross" />
+              </button>
+
+            </div>
+
+            <div class="ml-auto" style="width: 70px; height: 70px"></div>
           </div>
 
-          <file-bubble v-else :file="files[0].name" :download-enabled="false" />
+          <file-bubble v-else class="relative" :file="files[0].name" :download-enabled="false">
+
+            <template #prefix>
+              <button class="absolute top-1 right-2.5 text-white bg-rose-500 w-5 h-5 rounded-full overflow-hidden border-2 border-white flex justify-center items-center shadow-md shadow-rose-300 z-20" @click="removeAt(0)">
+                <van-icon size="10" name="cross" />
+              </button>
+            </template>
+
+          </file-bubble>
 
         </div>
 
@@ -98,7 +117,7 @@
       borderTopLeftRadius: '15px',
       borderTopRightRadius: '15px',
       maxWidth: '42rem',
-      left: left + 'px',
+      left: left + 'px'
     }"
     >
 
@@ -338,6 +357,14 @@ export default {
       return new File([blob], 'img.jpeg', {
         type: 'image/jpeg'
       })
+    },
+
+    removeAt(index) {
+      this.files = this.files.filter((_, _index) => index !== _index)
+      this.imagesPreview = this.imagesPreview.filter((_, _index) => index !== _index)
+      if(!this.files.length) {
+        this.attchEnable = false
+      }
     }
   }
 }

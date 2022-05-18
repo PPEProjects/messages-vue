@@ -3,6 +3,7 @@
     <div class="px-0.5" @click="download">
       <van-icon name="volume-o" class="mr-1" />
       <span class="file-name">{{ fileName }}</span>
+      <slot name="prefix"></slot>
     </div>
   </div>
 </template>

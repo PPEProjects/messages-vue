@@ -9,7 +9,7 @@
       </template>
 
       <template #right>
-        <van-button class="add-group-button opacity-0" color="#3b66f5" size="small" round :loading="isCreatingGroup" @click="createGroup()">
+        <van-button v-if="choices.length" color="#3b66f5" size="small" round :loading="isCreatingGroup" @click="createGroup()">
           CREATE
           <template #icon>
             <van-icon name="plus" color="#ffffff" />
@@ -71,24 +71,19 @@
 import {mapGetters} from "vuex";
 import {GET_ROOMS} from "~/apollo/queries/room.queries";
 import {SUB_MY_ROOMS} from "~/apollo/subscription/room.subscription";
-import {UPSERT_GROUP} from "~/apollo/mutation/room.mutation";
+import searchUsers from "~/plugins/mixins/searchUsers";
 
 export default {
   name: 'IndexPage',
+  mixins: [searchUsers],
   asyncData({ app }) {
     app.store.dispatch("home/setRooms", []);
   },
   data() {
     return {
-      keyword: '',
-      showSearchResults: false,
-      count: 0,
       timer: undefined,
       offset: 0,
-      canLoadMore: true,
-      searchResults: [],
-      choices: [],
-      isCreatingGroup: false
+      canLoadMore: true
     }
   },
   computed: {
@@ -189,76 +184,6 @@ export default {
               translateY: [0, 50],
             })
           }
-    },
-
-    clearSearch() {
-      this.showSearchResults = false
-      this.searchResults = []
-    },
-
-    async createGroup() {
-
-      if(this.choices.length < 2) {
-        return
-      }
-
-      this.$nuxt.$loading.start()
-      this.isCreatingGroup = true
-      try {
-
-        const _users = this.choices.map((e) => (
-          {
-            name: e.name,
-            avatar: e.avatar,
-            userID: String(e.id)
-          }
-        ))
-
-        _users.push({
-          name: this.user.name,
-          avatar: this.user.avatar,
-          userID: String(this.user.id)
-        })
-
-        const { data } = await this.$apollo.mutate({
-          mutation: UPSERT_GROUP,
-          variables: {
-            input: {
-              users: _users
-            }
-          }
-        })
-        this.$notify({
-          type: 'success',
-          message: 'Create room successfully!'
-        })
-        await this.$router.push({name: 'messenger', params: { id: data.roomUpsert.id }})
-      } catch (e) {}
-      this.isCreatingGroup = false
-      this.$nuxt.$loading.finish()
-    },
-
-    async onSearch() {
-      if(!this.keyword) {
-        return
-      }
-      try {
-        const data = await fetch('https://v2-be.smileeye.edu.vn/searchUser/' + this.keyword)
-        if(data.status === 200) {
-          this.searchResults = ((await data.json()) || []).splice(0, 5)
-          this.showSearchResults = true
-          if(this.searchResults.length) {
-            this.$nextTick(() => {
-              this.$anime({
-                targets: '.search-item',
-                opacity: [0, 1],
-                translateY: [-50, 0],
-                delay: this.$anime.stagger(100)
-              })
-            })
-          }
-        }
-      } catch (e) {}
     }
   },
 }
