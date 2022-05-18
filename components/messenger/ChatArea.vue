@@ -36,7 +36,8 @@
 <script>
 import {mapGetters} from "vuex";
 import {SUB_NEW_MESSAGE} from "~/apollo/subscription/room.subscription";
-import {GET_INBOXS, GET_ROOM_MESSAGES} from "~/apollo/queries/room.queries";
+import {GET_ROOM_MESSAGES} from "~/apollo/queries/room.queries";
+import {GET_INBOXS} from "~/apollo/queries/inbox.queries";
 
 export default {
   name: "ChatArea",

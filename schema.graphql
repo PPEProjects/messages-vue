@@ -1,0 +1,256 @@
+# This file was generated based on ".graphqlconfig". Do not edit manually.
+
+schema {
+    query: Query
+    mutation: Mutation
+    subscription: Subscription
+}
+
+union ResultUnion = File | Image | Message
+
+type File {
+    createdAt: Float!
+    file: String!
+    from: User!
+    id: ID!
+    license: License!
+    room: Room!
+}
+
+type Image {
+    createdAt: Float!
+    from: User!
+    id: ID!
+    images: [String!]!
+    license: License!
+    room: Room!
+}
+
+type Inbox {
+    "Example field (placeholder)"
+    exampleField: Int!
+}
+
+type License {
+    "Mã định danh app"
+    appID: String!
+    "Ngày tạo license"
+    createdAt: Float!
+    id: ID!
+}
+
+type Message {
+    content: String!
+    createdAt: Float!
+    from: User!
+    id: ID!
+    license: License!
+    readAt: [ReadAt!]!
+    room: Room!
+}
+
+type Mutation {
+    fileCreate(input: CreateFileInput!, roomId: String!): File!
+    imageMessageSend(input: CreateImageInput!, roomId: String!): Image!
+    licenseCreate(input: CreateLicenseInput!): Token!
+    messageRead(input: ReadMessageInput!): [Message!]!
+    messageSend(input: CreateMessageInput!, roomId: String!): Message!
+    noteCreate(input: CreateNoteInput!, roomId: String!): Note!
+    roomAdd(input: AddToRoomInput!): Room!
+    roomCreate(input: CreateRoomInput!): Room!
+    roomKick(input: KickRoomInput!): Room!
+    roomUpsert(input: UpserRoomInput!): Room!
+    upsertUsers(input: UpsertUsersInput!): [User!]!
+    userCreate(input: CreateUserInput!): User!
+    userRemove(userID: String!): User!
+    userUpdate(
+        input: UpdateUserInput!,
+        "User ID"
+        userID: String!
+    ): User!
+}
+
+type Note {
+    createdAt: Float!
+    from: User!
+    id: ID!
+    license: License!
+    note: String!
+    room: Room!
+}
+
+type Query {
+    getRooms(input: GetRoomsInput!): [Room!]!
+    inboxsGet(filter: GetInboxsInput!): [ResultUnion!]!
+    messagesByRoom(filter: GetMessagesInput!): [Message!]!
+    roomGet(roomID: String!, userID: String!): Room!
+    userOnline(userID: String!): UserOnline!
+    version: String!
+}
+
+type ReadAt {
+    time: Float!
+    user: User!
+}
+
+type Room {
+    avatar: String
+    createdAt: Float!
+    id: ID!
+    name: String!
+    updatedAt: Float
+    users: [User!]!
+}
+
+type RoomMessages {
+    messages: [Message!]!
+    room: Room!
+}
+
+type RoomOnlines {
+    onlines: [String!]!
+    room: Room!
+}
+
+type Subscription {
+    connect(input: CreateConnectInput!): User!
+    roomOnlines(roomID: String!, userID: String!): RoomOnlines!
+    roomSub(roomID: String!, userID: String!): Room!
+    subMyRooms(userID: String!): RoomMessages!
+    subNewInbox(userID: String!): Inbox!
+    subNewInboxByRoom(roomID: String!, userID: String!): ResultUnion!
+    subUserOnline(userID: String!): UserOnline!
+}
+
+type Token {
+    token: String!
+}
+
+type User {
+    avatar: String
+    createdAt: Float!
+    id: ID!
+    name: String!
+    "User ID thật"
+    userID: String!
+}
+
+type UserOnline {
+    isOnline: Boolean!
+    user: User!
+}
+
+input AddToRoomInput {
+    roomID: String!
+    userIDs: [String!]!
+}
+
+input CreateConnectInput {
+    "Thông tin của thành viên"
+    user: CreateUserInput!
+}
+
+input CreateFileInput {
+    "link file"
+    file: String
+    "User ID người gửi"
+    from: String!
+}
+
+input CreateImageInput {
+    "User ID người gửi"
+    from: String!
+    "Hình ảnh tin nhắn"
+    images: [String!]!
+}
+
+input CreateLicenseInput {
+    "Mã định danh app"
+    appID: String!
+}
+
+input CreateMessageInput {
+    "Nội dung tin nhắn"
+    content: String
+    "User ID người gửi"
+    from: String!
+}
+
+input CreateNoteInput {
+    "User ID người gửi"
+    from: String!
+    "Nọi dung gi chú"
+    note: String!
+}
+
+input CreateRoomInput {
+    "Ảnh đại diện"
+    avatar: String
+    "Tên nhóm"
+    name: String
+    "Mảng userID"
+    users: [String!]!
+}
+
+input CreateUserInput {
+    "ảnh đại diện người dùng"
+    avatar: String!
+    "tên người dùng"
+    name: String!
+    "id người dùng thật"
+    userID: String!
+}
+
+input GetInboxsInput {
+    "Giới hạn"
+    limit: Int!
+    "Skip"
+    offset: Int!
+    "Room ID"
+    roomID: String!
+}
+
+input GetMessagesInput {
+    "Giới hạn"
+    limit: Int!
+    "Skip"
+    offset: Int!
+    "Room ID"
+    roomID: String!
+}
+
+input GetRoomsInput {
+    "Giới hạn"
+    limit: Int!
+    "Skip"
+    offset: Int!
+    userID: String!
+}
+
+input KickRoomInput {
+    roomID: String!
+    userIDs: [String!]!
+}
+
+input ReadMessageInput {
+    "Điểm neo"
+    anchor: String!
+    "ID người đọc"
+    userID: String!
+}
+
+input UpdateUserInput {
+    "ảnh đại diện người dùng"
+    avatar: String
+    "tên người dùng"
+    name: String
+}
+
+input UpserRoomInput {
+    "Mảng User Data"
+    users: [CreateUserInput!]!
+}
+
+input UpsertUsersInput {
+    users: [CreateUserInput!]!
+}

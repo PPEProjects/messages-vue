@@ -35,10 +35,9 @@
         :class="[showSearch ? 'z-10 pointer-events-none' : 'z-20']"
       >
         <RoomMessages
-          v-for="({ messages, room }, index) in roomsShow"
+          v-for="(room, index) in rooms"
           :key="room.id"
           :data-index="index"
-          :message="messages[0]"
           :room="room"
         />
       </div>
@@ -95,9 +94,6 @@ export default {
   computed: {
     ...mapGetters('user', ['user']),
     ...mapGetters('home', ['rooms']),
-    roomsShow() {
-      return this.rooms.filter(room => room.messages.length > 0)
-    },
     showSearch() {
       return this.keyword.length > 0
     }
@@ -166,36 +162,17 @@ export default {
     },
 
     playAnimation(val) {
-      // if(this.timer) {
-      //   clearTimeout(this.timer)
-      // }
-      // this.timer = setTimeout(() => {
-      //   this.$nextTick(() => {
           if (val) {
             this.$anime({
               targets: this.$refs.messagesRef,
               opacity: [1, 0],
               translateY: [0, 50],
-              // duration: 2000,
-              /* begin: () => {
-                this.$refs.messagesRef.classList.remove('invisible')
-              },
-              complete: () => {
-                this.$refs.messagesRef.classList.add('invisible')
-              } */
             })
 
             this.$anime({
               targets: this.$refs.searchResult,
               opacity: [0, 1],
-              translateY: [50, 0],
-              // duration: 2000,
-              /* begin: () => {
-                this.$refs.searchResult.classList.remove('invisible')
-              },
-              complete: () => {
-                this.$refs.searchResult.classList.remove('invisible')
-              } */
+              translateY: [50, 0]
             })
 
           } else {
@@ -203,31 +180,15 @@ export default {
             this.$anime({
               targets: this.$refs.messagesRef,
               opacity: [0, 1],
-              translateY: [50, 0],
-              /* duration: 2000,
-              begin: () => {
-                this.$refs.messagesRef.classList.remove('invisible')
-              },
-              complete: () => {
-                this.$refs.messagesRef.classList.remove('invisible')
-              } */
+              translateY: [50, 0]
             })
 
             this.$anime({
               targets: this.$refs.searchResult,
               opacity: [1, 0],
               translateY: [0, 50],
-              // duration: 2000,
-              /* begin: () => {
-                this.$refs.searchResult.classList.remove('invisible')
-              },
-              complete: () => {
-                this.$refs.searchResult.classList.add('invisible')
-              } */
             })
           }
-      //   })
-      // }, 300)
     },
 
     clearSearch() {
