@@ -19,11 +19,12 @@
 <script>
 import {mapGetters} from "vuex";
 import {SUB_USER_ONLINE} from "~/apollo/subscription/room.subscription";
+import {GET_ROOM} from "~/apollo/queries/room.queries";
 
 export default {
   name: "MessengerRoom",
   asyncData({ app }) {
-    app.store.dispatch("room/setMessages", []);
+    app.store.dispatch("room/setInboxs", []);
   },
   data() {
     return {
@@ -35,6 +36,7 @@ export default {
   },
   mounted() {
     this.$nextTick(() => this.configView())
+    this.$nextTick(() => this.getRoom())
   },
   apollo: {
     $subscribe: {
@@ -48,6 +50,7 @@ export default {
         },
         result ({ data }) {
           // Let's update the local data
+         this.$store.dispatch('room/setRoom', data.roomOnlines.room)
          this.$store.dispatch('room/setOnlines', data.roomOnlines.onlines);
         },
       }
@@ -60,6 +63,21 @@ export default {
       this.$refs.areaRef.$el.style.height = `calc(100vh - ${h1 + h2}px)`
       this.$refs.areaRef.$el.style.opacity = '1'
     },
+
+    async getRoom() {
+      try {
+        const { data } = await this.$apollo.query({
+          query: GET_ROOM,
+          variables: {
+            roomId: this.$route.params.id,
+            userId: String(this.user.id)
+          }
+        });
+
+        await this.$store.dispatch('room/setRoom', data.roomGet)
+
+      } catch (e) {}
+    }
   }
 }
 </script>

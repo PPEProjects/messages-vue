@@ -24,7 +24,7 @@ export const actions = {
   async getMe({ commit, dispatch }, payload) {
     try {
 
-      const { data } = await this.$axios.get('https://v2-be.smileeye.edu.vn/detailUser/' + payload)
+      const { data } = await this.$axios.get('https://v2-be.smileeye.edu.vn/get-user')
 
       if(data) {
         dispatch('setUser', data)

@@ -7,6 +7,9 @@ export const SUB_INBOX_BY_ROOM = gql`
         id
         from {
           id
+          name
+          userID
+          avatar
         }
         content
         createdAt

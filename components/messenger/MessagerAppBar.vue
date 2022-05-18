@@ -31,7 +31,6 @@
 
 <script>
 import {mapGetters} from "vuex";
-import {GET_ROOM} from "~/apollo/queries/room.queries";
 
 export default {
   name: "MessagerAppBar",
@@ -39,43 +38,11 @@ export default {
     ...mapGetters('user', ['user']),
     ...mapGetters('room', ['room', 'members']),
   },
-  apollo: {
-    roomGet: {
-      query: GET_ROOM,
-      variables() {
-        return {
-          roomId: this.$route.params.id,
-          userId: String(this.user.id)
-        }
-      },
-      fetchPolicy: 'cache-only',
-      manual: true,
-      result({ data }) {
-        if(data && data.roomGet) {
-          this.$store.dispatch('room/setRoom', data.roomGet);
-        }
-      }
-    }
-  },
-  mounted() {
-    this.$nextTick(() => this.getRoom())
-  },
   methods: {
     showRoomInfo() {
       if(this.members.length) {
         this.$nuxt.$emit("showRoomInfo");
       }
-    },
-    async getRoom() {
-      try {
-        await this.$apollo.query({
-          query: GET_ROOM,
-          variables: {
-            roomId: this.$route.params.id,
-            userId: String(this.user.id)
-          }
-        });
-      } catch (e) {}
     }
   }
 }

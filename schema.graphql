@@ -14,6 +14,7 @@ type File {
     from: User!
     id: ID!
     license: License!
+    readAt: [ReadAt!]!
     room: Room!
 }
 
@@ -23,6 +24,7 @@ type Image {
     id: ID!
     images: [String!]!
     license: License!
+    readAt: [ReadAt!]!
     room: Room!
 }
 
@@ -76,6 +78,7 @@ type Note {
     id: ID!
     license: License!
     note: String!
+    readAt: [ReadAt!]!
     room: Room!
 }
 

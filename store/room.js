@@ -11,7 +11,8 @@ export const getters = {
   messages: (state) => state.messages,
   room: (state) => state.room,
   members: state => state.room.users || [],
-  inboxs: state => state.inboxs
+  inboxs: state => state.inboxs,
+  offset: state => state.inboxs.filter((e) => e.content).length
 }
 
 // mutations

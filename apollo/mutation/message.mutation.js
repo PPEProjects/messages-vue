@@ -19,15 +19,6 @@ export const KICK_MEMBERS = gql`
   mutation RoomKick($input: KickRoomInput!) {
     roomKick(input: $input) {
       id
-      name
-      avatar
-      users {
-        id
-        name
-        userID
-        avatar
-      }
-      createdAt
     }
   }
 `

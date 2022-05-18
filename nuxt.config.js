@@ -79,6 +79,12 @@ export default {
       pathRewrite: {
         '^/bunny/': ''
       }
+    },
+    '/api': {
+      target: process.env.SMILE_EYE_SERVER,
+      pathRewrite: {
+        '^/api/': ''
+      }
     }
   },
 

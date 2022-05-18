@@ -7,6 +7,9 @@ export const GET_INBOXS = gql`
         id
         from {
           id
+          name
+          userID
+          avatar
         }
         content
         createdAt
@@ -30,6 +33,15 @@ export const GET_INBOXS = gql`
           userID
           avatar
         }
+        readAt {
+          user {
+            id
+            name
+            userID
+            avatar
+          }
+          time
+        }
       }
       ... on File {
         id
@@ -40,6 +52,15 @@ export const GET_INBOXS = gql`
           name
           userID
           avatar
+        }
+        readAt {
+          user {
+            id
+            name
+            userID
+            avatar
+          }
+          time
         }
       }
     }

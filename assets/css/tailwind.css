@@ -50,7 +50,7 @@ button.ant-btn-sm > svg {
 }
 
 .chat-item[data-current=true] .bubble-content {
-  background: linear-gradient(45deg,#5ca0ff,#146be6,#146be6);
+  background: linear-gradient(45deg, #7694f8, #3b66f5, #3b66f5);
   color: #fff;
 }
 
@@ -68,26 +68,6 @@ button.ant-btn-sm > svg {
   transform: scale(0);
 }
 
-.chat-item._images .bubble-content {
-  background: unset;
-  border: 2px solid #146be6;
-  padding: 0.5rem;
-}
-
-.chat-item._images .bubble-content:before {
-  border-left: 7px solid transparent;
-  border-right: 7px solid #146be6;
-  border-top: 7px solid #146be6;
-  border-bottom: 7px solid transparent;
-  right: -15px;
-}
-
-.chat-item._file .bubble-content {
-  background: #f4f7fb;
-  --tw-text-opacity: 1;
-  color: rgb(55 65 81 / var(--tw-text-opacity));
-}
-
 .chat-item._images:not(._file) .bubble-content {
   width: 100%;
 }
@@ -98,4 +78,8 @@ button.ant-btn-sm > svg {
 
 #messageInput .file-bubble {
   color: #374151;
+}
+
+.images-bubble .van-grid-item__content {
+  background: transparent;
 }

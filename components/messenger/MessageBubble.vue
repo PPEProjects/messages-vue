@@ -2,12 +2,12 @@
   <div
     class="flex my-10 items-start chat-item opacity-0"
     :data-current="isOwn"
-    :data-id="message.id"
+    :data-id="inbox.id"
     :class="{
-          '_content': message.content,
-          '_images': message.images,
-          '_images _file': message.file,
-          'flex-row-reverse': isOwn
+       '_content': inbox.content,
+       '_images': inbox.images,
+       '_images _file': inbox.file,
+       'flex-row-reverse': isOwn
     }"
   >
 
@@ -44,21 +44,33 @@ import {mapGetters} from "vuex";
 export default {
   name: "MessageBubble",
   props: {
-    message: {
+    inbox: {
       type: Object,
       required: true
     },
   },
+  data() {
+    return {
+      isOwn: false
+    }
+  },
   computed: {
     ...mapGetters('user', ['user']),
     isRead() {
-      return this.message.readAt.includes((e) => {
-        return e.user.userID === String(this.user.id);
+      return this.inbox.readAt.includes((e) => {
+        return e.inbox.userID === String(this.user.id);
       });
-    },
-    isOwn() {
-      return this.message.from.userID === String(this.user.id);
     }
   },
+  mounted() {
+    this.setup()
+  },
+  methods: {
+    setup() {
+
+      this.isOwn = this.inbox.from.userID === String(this.user.id)
+
+    }
+  }
 }
 </script>
