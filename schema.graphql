@@ -59,8 +59,10 @@ type Mutation {
     messageSend(input: CreateMessageInput!, roomId: String!): Message!
     noteCreate(input: CreateNoteInput!, roomId: String!): Note!
     roomAdd(input: AddToRoomInput!): Room!
+    "Sẽ xoá trong các version sau"
     roomCreate(input: CreateRoomInput!): Room!
     roomKick(input: KickRoomInput!): Room!
+    roomUpdateInfo(input: UpdateRoomInfoInput!): Room!
     roomUpsert(input: UpserRoomInput!): Room!
     upsertUsers(input: UpsertUsersInput!): [User!]!
     userCreate(input: CreateUserInput!): User!
@@ -240,6 +242,13 @@ input ReadMessageInput {
     "Điểm neo"
     anchor: String!
     "ID người đọc"
+    userID: String!
+}
+
+input UpdateRoomInfoInput {
+    avatar: String!
+    name: String!
+    roomID: String!
     userID: String!
 }
 

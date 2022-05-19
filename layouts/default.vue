@@ -13,6 +13,14 @@
       </div>
     </div>
 
+
+    <div v-if="$route.name === 'index'" id="logoutButton" class="sticky bg-primary-500 z-50 cursor-pointer" @click="logout">
+      Đăng Xuất
+      <svg class="fill-current ml-2" width="18" height="18">
+        <use xlink:href="#i-logout"/>
+      </svg>
+    </div>
+
   </div>
 
 </template>
@@ -67,6 +75,12 @@ export default {
         })
       }
     }
+  },
+  methods: {
+    logout() {
+      this.$cookies.removeAll()
+      window.location.href = '/'
+    }
   }
 }
 </script>
@@ -93,5 +107,18 @@ export default {
 #sidebarInput:not(:checked) + div > ._show_btn {
   opacity: 0;
   transform: scale(0);
+}
+
+#logoutButton {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 20px;
+  border-radius: 30px;
+  box-shadow: 0 0 5px rgba(59, 102, 244, 0.99);
 }
 </style>

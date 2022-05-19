@@ -6,7 +6,7 @@
       'invisible opacity-0': !open
     }"
   >
-    <a class="absolute top-0 left-0 w-full h-full close-overlay cursor-pointer" title="Close" @click="dispose()" />
+    <a class="absolute top-0 left-0 w-full h-full close-overlay cursor-pointer _close" title="Close" @click="dispose()" />
     <div
       :id="`${event}Body`"
       ref="body"
@@ -17,7 +17,7 @@
         }
       "
     >
-      <a class="-translate-x-7 z-10 absolute close-button right-0 text-xl top-0 transform translate-y-5 cursor-pointer" @click="dispose()">
+      <a class="-translate-x-7 z-10 absolute close-button right-0 text-xl top-0 transform translate-y-5 cursor-pointer _close" @click="dispose()">
         <svg ref="closeButton" class="fill-current opacity-0" width="18" height="18">
           <use xlink:href="#i-times" />
         </svg>

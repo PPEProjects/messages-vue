@@ -29,7 +29,6 @@ export const actions = {
       if(data) {
         dispatch('setUser', data)
       }
-
     } catch (e) {}
   },
 

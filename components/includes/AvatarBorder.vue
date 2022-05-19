@@ -6,7 +6,7 @@
     >
       <img
         class="animate image-hover-zoom w-full h-full object-cover"
-        :src="avatar"
+        :src="avatar || 'https://i.imgur.com/tBfOe5r.jpg'"
         alt=""
       />
     </div>
@@ -26,7 +26,7 @@ export default {
   props: {
     avatar: {
       type: String,
-      default: 'https://cdn.dribbble.com/users/5138895/avatars/normal/451a1e7c8e255dcddab3228559055b2b.png?1603969526'
+      default: 'https://i.imgur.com/tBfOe5r.jpg'
     },
     onlines: {
       type: Number,

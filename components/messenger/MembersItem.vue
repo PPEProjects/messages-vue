@@ -3,7 +3,7 @@
   <van-swipe-cell :before-close="beforeClose" :disabled="member.length <= 2">
     <div class="py-3 border-b last:border-0 border-gray-100 flex items-center cursor-pointer">
 
-      <avatar-border :onlines="isOnline ? 1 : 0" class="relative flex-shrink-0" avatar-class="w-16 h-16 border-4" />
+      <avatar-border :avatar="member.avatar" :onlines="isOnline ? 1 : 0" class="relative flex-shrink-0" avatar-class="w-16 h-16 border-4" />
 
       <div class="w-full ml-4 mr-auto">
         <div>
@@ -54,16 +54,34 @@ export default {
           instance.close();
           break;
         case 'right':
-          this.$dialog.confirm({
-            message: 'Are you sure to delete?',
-            cancelButtonText: 'Cancel',
-            confirmButtonText: 'Delete'
-          })
-            .then(() => this.kickUser(instance));
+          this.verifyDelete()
           break;
       }
     },
-    async kickUser(instance) {
+    verifyDelete() {
+
+      const check = this.member.userID === String(this.user.id)
+
+      if(check) {
+        this.$dialog.confirm({
+          message: 'Do you want to remove yourself?',
+          cancelButtonText: 'Cancel',
+          confirmButtonText: 'Delete'
+        })
+          .then(async () => {
+            await this.kickUser()
+            this.$router.back()
+          });
+      } else {
+        this.$dialog.confirm({
+          message: 'Are you sure to delete?',
+          cancelButtonText: 'Cancel',
+          confirmButtonText: 'Delete'
+        })
+          .then(() => this.kickUser());
+      }
+    },
+    async kickUser() {
       this.$nuxt.$loading.start()
       try {
         await this.$apollo.mutate({
@@ -79,7 +97,7 @@ export default {
           type: 'success',
           message: 'Kick member successfully!'
         })
-        instance.close()
+        this.$dialog.close()
       } catch (e) {}
       this.$nuxt.$loading.finish()
     }

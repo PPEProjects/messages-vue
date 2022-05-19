@@ -6,13 +6,13 @@
     <div class="flex">
 
       <div ref="avatarRef">
-        <avatar-border class="relative flex-shrink-0" :onlines="onlines.length" />
+        <avatar-border :avatar="room.avatar" class="relative flex-shrink-0" :onlines="onlines.length" />
       </div>
 
       <div ref="contentRef" class="w-full pl-3">
         <div class="flex items-center justify-between">
           <h4 class="font-medium line-clamp-1">
-            {{ room.name || 'Chat Room' }}
+            {{ roomName }}
           </h4>
 
           <span v-if="isRead" ref="readAt" class="ml-4 flex items-center text-gray-500 flex-shrink-0 opacity-90">
@@ -75,6 +75,18 @@ export default {
         return e.user.userID === String(this.user.id);
       });
     },
+    roomName() {
+      if(this.room.name) {
+        return this.room.name
+      } else if (this.room.users.length === 1) {
+        return 'Room of your self'
+      } else if(this.room.users.length === 2) {
+        const _index = this.room.users.findIndex((e) => String(e.userID) === String(this.user.id))
+        return this.room.users[_index === 0 ? 1 : 0].name
+      } else {
+        return 'Group ' + this.room.users.length + ' members'
+      }
+    }
   },
   apollo: {
     $subscribe: {

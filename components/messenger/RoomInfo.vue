@@ -20,31 +20,70 @@
           <div class="flex h-24">
             <div class="relative flex-shrink-0">
               <div
-                class="h-24 w-24 rounded-full overflow-hidden border-4 border-white shadow-lg"
+                class="h-24 w-24 rounded-full overflow-hidden border-4 border-white shadow-lg relative"
               >
                 <img
-                  class="w-full h-full object-cover"
-                  src="https://i.imgur.com/lzv2cPV.png"
+                  class="w-full h-full object-cover relative z-10"
+                  :src="form.avatar || room.avatar || 'https://i.imgur.com/tBfOe5r.jpg'"
                   alt=""
                 />
+
+                <input id="avatarInput" ref="avatarInput" class="hidden" type="file" accept="image/*" @change="updateAvatar" />
+
+                <label
+                  for="avatarInput" class="absolute z-20 top-0 w-full h-full left-0 flex items-center justify-center bg-[#00000066] animate"
+                  :class="{
+                    'opacity-0 pointer-events-none': !enableEdit
+                  }"
+                >
+                  <van-icon
+                    size="30"
+                    color="#fff"
+                    name="photo-o"
+                    class="animate delay-100"
+                    :class="{
+                      'opacity-0 scale-0': !enableEdit
+                    }"
+                  />
+                </label>
+
               </div>
               <div
-                class="w-8 h-8 rounded-full border-2 border-white absolute bg-primary-500 flex items-center justify-center text-[14px] text-white shadow-lg bottom-0 right-0"
+                class="w-8 h-8 rounded-full border-2 border-white absolute bg-primary-500 flex items-center justify-center text-[14px] text-white shadow-lg bottom-0 right-0 transform animate z-20"
+                :class="{
+                  'opacity-0 scale-0': enableEdit
+                }"
               >
                 {{ members.length }}
               </div>
             </div>
 
             <div class="pl-4 h-full flex flex-col justify-center w-full">
-              <h5 class="line-clamp-2">{{ room.name || 'Chat Room' }}</h5>
-              <div class="text-gray-400 text-sm mt-1">
+              <input
+                ref="nameInput"
+                :value="room.name"
+                class="line-clamp-2 border-b-2 pb-1 animate"
+                :class="{
+                  'pointer-events-none border-transparent': !enableEdit,
+                  'border-primary-500 translate-y-3': enableEdit
+                }"
+              />
+              <div
+                class="text-gray-400 text-sm mt-1 animate transform"
+                :class="{
+                  'translate-y-3 opacity-0': enableEdit
+                }"
+              >
                 Created At:
                 {{ $dayjs(room.createdAt).format('YYYY-MM-DD HH:mm') }}
               </div>
             </div>
 
-            <button class="mx-4 flex-shrink-0">
-              <van-icon name="edit" />
+            <button class="mx-4 flex-shrink-0" @click="openEdit()">
+              <van-icon v-if="!enableEdit" name="edit" />
+              <svg v-else class="fill-current" width="18" height="18">
+                <use xlink:href="#i-save"/>
+              </svg>
             </button>
           </div>
         </div>
@@ -53,12 +92,12 @@
 
           <div class="flex items-center relative z-20">
             Members
-            <button v-if="!openSearch" class="ml-auto text-sm text-gray-300" @click="openSearch = true">
+            <button v-if="!openSearch" class="ml-auto text-sm text-gray-400" @click="openSearch = true">
               <span class="text-xs">Add</span>
               <van-icon name="plus" />
             </button>
 
-            <button v-if="openSearch" class="ml-auto text-sm text-gray-300" @click="clearSearch()">
+            <button v-if="openSearch" class="ml-auto text-sm text-gray-400" @click="clearSearch()">
               <span class="text-xs">clear</span>
               <van-icon name="cross" />
             </button>
@@ -129,8 +168,9 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import {v4 as uuidv4} from "uuid";
 import searchUsers from "~/plugins/mixins/searchUsers";
-import {ADD_USERS_TO_GROUP} from "~/apollo/mutation/room.mutation";
+import {ADD_USERS_TO_GROUP, UPDATE_ROOM} from "~/apollo/mutation/room.mutation";
 
 export default {
   name: 'RoomInfo',
@@ -141,7 +181,9 @@ export default {
       left: 0,
       active: 0,
       openSearch: false,
-      isLoading: false
+      isLoading: false,
+      enableEdit: false,
+      form: {}
     }
   },
   computed: {
@@ -223,6 +265,57 @@ export default {
       this.keyword = ''
       this.searchResults = []
       this.openSearch = false
+      this.choices = []
+    },
+
+    async openEdit() {
+      // mở edit
+      if(!this.enableEdit) {
+        this.form = Object.assign({}, this.room)
+        this.enableEdit = true
+        this.$refs.nameInput.focus()
+      } else {
+        this.$notify({ message: 'Cập nhật thành công', type: 'success' })
+        await this.saveRoomInfo()
+        this.enableEdit = false
+      }
+    },
+
+    async saveRoomInfo() {
+      try {
+        await this.$apollo.mutate({
+          mutation: UPDATE_ROOM,
+          variables: {
+            input: {
+              avatar: this.form.avatar || '',
+              name: this.$refs.nameInput.value || '',
+              roomID: this.room.id,
+              userID: String(this.user.id)
+            }
+          }
+        })
+      } catch (e) {}
+    },
+
+    async updateAvatar() {
+      this.$refs.avatarInput.readOnly = true
+      try {
+        const file = this.$refs.avatarInput.files[0]
+        const extension = file.type.replace(/^image\//, '')
+        const fileName =  `messages/group/${uuidv4()}.${extension}`
+
+        await this.$axios.$put('/bunny/' + fileName, file, {
+          headers: {
+            AccessKey: process.env.VITE_BUNNY_TOKEN,
+            'Content-Type': extension
+          }
+        })
+
+        this.form.avatar = process.env.VITE_BUNNY_CDN + fileName
+        await this.saveRoomInfo()
+
+      } catch (e) {}
+      this.$refs.avatarInput.readOnly = false
     },
 
     playAnimation(val) {

@@ -35,11 +35,9 @@ export default {
     this.$store.dispatch("room/setInboxs", [])
     this.$store.dispatch("room/setRoom", {})
   },
-  created() {
-    this.getRoom()
-  },
   mounted() {
     this.$nextTick(() => this.configView())
+    this.$nextTick(() => this.getRoom())
   },
   apollo: {
     $subscribe: {

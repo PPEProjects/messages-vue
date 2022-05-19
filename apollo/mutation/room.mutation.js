@@ -18,3 +18,12 @@ export const ADD_USERS_TO_GROUP = gql `
     }
   }
 `
+
+
+export const UPDATE_ROOM = gql`
+  mutation RoomUpdateInfo($input: UpdateRoomInfoInput!) {
+    roomUpdateInfo(input: $input) {
+      id
+    }
+  }
+`

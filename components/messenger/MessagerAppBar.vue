@@ -9,12 +9,25 @@
     </template>
 
     <template #title>
-      <div v-if="members.length" id="room-users" class="flex justify-center px-5 cursor-pointer" @click="showRoomInfo()">
+
+      <div
+        v-if="room.avatar"
+        class="w-9 h-9 bg-white rounded-full border-2 border-white overflow-hidden user-appbar-item"
+        @click="showRoomInfo()"
+      >
+        <img
+          class="w-full h-full object-cover"
+          :src="room.avatar"
+          :alt="room.name"
+        >
+      </div>
+
+      <div v-else id="room-users" ref="listUsers" class="flex justify-center px-5 cursor-pointer" @click="showRoomInfo()">
         <div
           v-for="(user, index) in members.slice(0, 3)"
           :key="user.id"
           :data-index="index"
-          class="w-9 h-9 bg-white rounded-full border-2 border-white overflow-hidden mx-[-5px]"
+          class="w-9 h-9 bg-white rounded-full border-2 border-white overflow-hidden mx-[-5px] user-appbar-item"
         >
           <img
             class="w-full h-full object-cover"

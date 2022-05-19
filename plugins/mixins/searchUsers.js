@@ -18,7 +18,7 @@ export default {
 
     async createGroup() {
 
-      if(this.choices.length < 2) {
+      if(this.choices.length < 1) {
         return
       }
 
