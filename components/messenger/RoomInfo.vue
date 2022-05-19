@@ -58,7 +58,7 @@
               <van-icon name="plus" />
             </button>
 
-            <button v-if="openSearch" class="ml-auto text-sm text-gray-300" @click="openSearch = false">
+            <button v-if="openSearch" class="ml-auto text-sm text-gray-300" @click="clearSearch()">
               <span class="text-xs">clear</span>
               <van-icon name="cross" />
             </button>

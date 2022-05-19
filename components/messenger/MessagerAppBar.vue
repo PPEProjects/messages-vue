@@ -9,9 +9,9 @@
     </template>
 
     <template #title>
-      <div id="room-users" class="flex justify-center px-5 cursor-pointer" @click="showRoomInfo()">
+      <div v-if="members.length" id="room-users" class="flex justify-center px-5 cursor-pointer" @click="showRoomInfo()">
         <div
-          v-for="(user, index) in members"
+          v-for="(user, index) in members.slice(0, 3)"
           :key="user.id"
           :data-index="index"
           class="w-9 h-9 bg-white rounded-full border-2 border-white overflow-hidden mx-[-5px]"

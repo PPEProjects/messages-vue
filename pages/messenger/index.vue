@@ -23,9 +23,6 @@ import {GET_ROOM} from "~/apollo/queries/room.queries";
 
 export default {
   name: "MessengerRoom",
-  asyncData({ app }) {
-    app.store.dispatch("room/setInboxs", []);
-  },
   data() {
     return {
       isLoading: false
@@ -34,9 +31,15 @@ export default {
   computed: {
     ...mapGetters('user', ['user'])
   },
+  beforeDestroy() {
+    this.$store.dispatch("room/setInboxs", [])
+    this.$store.dispatch("room/setRoom", {})
+  },
+  created() {
+    this.getRoom()
+  },
   mounted() {
     this.$nextTick(() => this.configView())
-    this.$nextTick(() => this.getRoom())
   },
   apollo: {
     $subscribe: {
@@ -71,7 +74,8 @@ export default {
           variables: {
             roomId: this.$route.params.id,
             userId: String(this.user.id)
-          }
+          },
+          fetchPolicy: 'no-cache'
         });
 
         await this.$store.dispatch('room/setRoom', data.roomGet)
