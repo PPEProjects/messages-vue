@@ -8,3 +8,13 @@ export const UPSERT_GROUP = gql`
     }
   }
 `
+
+
+export const ADD_USERS_TO_GROUP = gql `
+  mutation RoomAdd($input: AddToRoomInput!) {
+    roomAdd(input: $input) {
+      id
+      updatedAt
+    }
+  }
+`

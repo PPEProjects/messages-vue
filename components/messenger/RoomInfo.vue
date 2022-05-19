@@ -109,13 +109,28 @@
 
         </div>
       </div>
+
     </div>
+
+    <button
+      class="w-14 h-14 transform animate flex justify-center items-center border-[3px] border-white shadow-md bg-primary-500 absolute bottom-5 right-5 text-white rounded-full"
+      :class="{
+        'scale-0 opacity-0': !choices.length && show,
+        'opacity-50': isLoading
+      }"
+      :disabled="!choices.length && show || isLoading"
+      @click="addToGroup()"
+    >
+      <van-icon size="25" name="plus" />
+    </button>
+
   </van-popup>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
 import searchUsers from "~/plugins/mixins/searchUsers";
+import {ADD_USERS_TO_GROUP} from "~/apollo/mutation/room.mutation";
 
 export default {
   name: 'RoomInfo',
@@ -125,7 +140,8 @@ export default {
       show: false,
       left: 0,
       active: 0,
-      openSearch: false
+      openSearch: false,
+      isLoading: false
     }
   },
   computed: {
@@ -182,6 +198,31 @@ export default {
       const width = window.innerWidth
       const maxWidth = document.getElementById('body').scrollWidth
       this.left = (width - maxWidth) / 2
+    },
+
+    async addToGroup() {
+      this.isLoading = true
+      try {
+        await this.$apollo.mutate({
+          mutation: ADD_USERS_TO_GROUP,
+          variables: {
+            input: {
+              roomID: this.room.id,
+              users: this.choices.map((e) => ({ name: e.name || '', avatar: e.avatar || '', userID: String(e.id) }))
+            }
+          }
+        })
+        this.$notify({ message: 'Thêm thành công', type: 'success' })
+        this.clearSearch()
+      } catch (e) {}
+      this.isLoading = false
+    },
+
+    clearSearch() {
+      this.showSearchResults = false
+      this.keyword = ''
+      this.searchResults = []
+      this.openSearch = false
     },
 
     playAnimation(val) {

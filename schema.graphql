@@ -145,7 +145,8 @@ type UserOnline {
 
 input AddToRoomInput {
     roomID: String!
-    userIDs: [String!]!
+    "Mảng User Data"
+    users: [CreateUserInput!]!
 }
 
 input CreateConnectInput {
