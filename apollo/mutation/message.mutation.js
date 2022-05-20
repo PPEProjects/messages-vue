@@ -38,3 +38,11 @@ export const SEND_FILE = gql`
     }
   }
 `
+
+export const UPSERT_USERS = gql `
+  mutation UpsertUsers($input: UpsertUsersInput!) {
+    upsertUsers(input: $input) {
+      id
+    }
+  }
+`

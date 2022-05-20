@@ -1,3 +1,5 @@
+import {UPSERT_USERS} from "~/apollo/mutation/message.mutation";
+
 export const state = () => ({
   /**
    * @property { { name: String, avatar: String, email: String, role: String, verified: Boolean } } user
@@ -28,6 +30,20 @@ export const actions = {
 
       if(data) {
         dispatch('setUser', data)
+        await this.app.apolloProvider.defaultClient.mutate({
+          mutation: UPSERT_USERS,
+          variables: {
+            input: {
+              users: [
+                {
+                  name: data.name || '',
+                  avatar: data.avatar || '',
+                  userID: String(data.id)
+                }
+              ]
+            }
+          }
+        })
       }
     } catch (e) {}
   },

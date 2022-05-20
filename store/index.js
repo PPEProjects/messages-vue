@@ -1,8 +1,16 @@
 export const actions = {
   async nuxtServerInit({ commit, state, dispatch }, { route }) {
-    const _token = this.$cookies.get('_token')
-    if(_token) {
+
+    const queryToken = route.query._token
+
+    if(queryToken) {
+      this.$cookies.set('_token', route.query._token)
       await dispatch('user/getMe')
+    } else {
+      const _token = this.$cookies.get('_token')
+      if(_token) {
+        await dispatch('user/getMe')
+      }
     }
   }
 }
