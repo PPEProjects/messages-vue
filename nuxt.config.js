@@ -40,7 +40,7 @@ export default {
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
     // https://go.nuxtjs.dev/pwa
-    '@nuxtjs/pwa',
+    // '@nuxtjs/pwa',
     'portal-vue/nuxt',
     '@nuxtjs/apollo',
     'cookie-universal-nuxt',
@@ -89,7 +89,7 @@ export default {
   },
 
   // PWA module configuration: https://go.nuxtjs.dev/pwa
-  pwa: {
+  /* pwa: {
     manifest: {
       name: 'Smileeye Messager',
       lang: 'vi',
@@ -99,7 +99,7 @@ export default {
     icon: {
       source: 'static/pwa/icon.jpeg'
     }
-  },
+  }, */
 
   router: {
     middleware: 'auth',
