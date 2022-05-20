@@ -93,7 +93,8 @@ export default {
     manifest: {
       name: 'Smileeye Messager',
       lang: 'vi',
-      useWebmanifestExtension: false
+      useWebmanifestExtension: false,
+      start_url: '/'
     },
     icon: {
       source: 'static/pwa/icon.jpeg'
