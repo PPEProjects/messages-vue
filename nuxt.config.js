@@ -91,7 +91,12 @@ export default {
   // PWA module configuration: https://go.nuxtjs.dev/pwa
   pwa: {
     manifest: {
-      lang: 'vi'
+      name: 'Smileeye Messager',
+      lang: 'vi',
+      useWebmanifestExtension: false
+    },
+    icon: {
+      source: 'static/pwa/icon.jpeg'
     }
   },
 
