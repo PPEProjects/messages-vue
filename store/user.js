@@ -45,7 +45,9 @@ export const actions = {
           }
         })
       }
-    } catch (e) {}
+    } catch (e) {
+      console.log(e)
+    }
   },
 
   setUser({ commit }, payload) {
