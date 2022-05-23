@@ -17,10 +17,7 @@
 
         <div
           class="flex items-center cursor-pointer animate"
-          :class="{
-            'opacity-50': choices.findIndex((e) => e.id === user.id) >= 0
-          }"
-          @click="choiseUser(user)"
+          @click="$emit('choice', user)"
         >
 
           <avatar-border :avatar="user.avatar" />
@@ -54,47 +51,19 @@ export default {
       initValue: this.value
     }
   },
-  watch: {
-    choices: {
-      handler(value, prev) {
-        if(prev.length === 0 && value.length > 0) {
-          this.$nextTick(() => {
-            this.transformY = this.$refs.choices.scrollHeight
-            this.$anime({
-              targets: this.$refs.results,
-              // opacity: [1, 0],
-              translateY: [0, this.transformY],
-            })
-
-          })
-        } else if(value.length === 0 && prev.length) {
-          this.$nextTick(() => {
-            this.$anime({
-              targets: this.$refs.results,
-              // opacity: [1, 0],
-              translateY: [this.transformY, 0],
-            })
-
-          })
-        }
-        this.$emit('input', this.choices)
-      },
-      deep: true
-    }
-  },
   methods: {
     choiseUser(user) {
-      const _index = this.choices.findIndex((e) => e.id === user.id)
+      /* const _index = this.choices.findIndex((e) => e.id === user.id)
       if(_index >= 0) {
         this.choices = this.choices.filter((e) => e.id !== user.id)
       } else {
         this.choices = [...this.choices, user]
-      }
+      } */
     },
 
-    removeAt(_index) {
+    /* removeAt(_index) {
       this.choices = this.choices.filter((_, index) => index !== _index)
-    }
+    } */
   }
 }
 </script>

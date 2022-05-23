@@ -9,12 +9,7 @@
       </template>
 
       <template #right>
-        <van-button v-if="choices.length" color="#3b66f5" size="small" round :loading="isCreatingGroup" @click="createGroup()">
-          CREATE
-          <template #icon>
-            <van-icon name="plus" color="#ffffff" />
-          </template>
-        </van-button>
+        <img class="rounded-full" width="35px" height="35px" src="/images/logo.jpeg" alt="" />
       </template>
 
     </van-nav-bar>
@@ -51,7 +46,7 @@
 
         <div v-else>
 
-          <search-results v-if="searchResults.length" v-model="choices" :users="searchResults.filter((e) => e.id !== user.id)" />
+          <search-results v-if="searchResults.length" :users="searchResults.filter((e) => e.id !== user.id)" @choice="createRoom($event)" />
 
           <div v-else>
             <img class="max-w-[200px] mx-auto block" src="/images/cat-cry.jpg" alt="" />
@@ -184,6 +179,11 @@ export default {
               translateY: [0, 50],
             })
           }
+    },
+
+    createRoom(_user) {
+      this.choices = [_user]
+      this.createGroup()
     }
   },
 }

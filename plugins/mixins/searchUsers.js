@@ -48,10 +48,10 @@ export default {
             }
           }
         })
-        this.$notify({
+        /* this.$notify({
           type: 'success',
           message: 'Create room successfully!'
-        })
+        }) */
         await this.$router.push({name: 'messenger', params: { id: data.roomUpsert.id }})
       } catch (e) {}
       this.isCreatingGroup = false
