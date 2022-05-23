@@ -7,7 +7,11 @@
        '_content': inbox.content,
        '_images': inbox.images,
        '_images _file': inbox.file,
-       'flex-row-reverse': isOwn
+       'flex-row-reverse': isOwn,
+        _images_grid_4: inbox.images && inbox.images.length >= 4,
+        _images_grid_3: inbox.images && inbox.images.length === 3,
+        _images_grid_2: inbox.images && inbox.images.length === 2,
+        _images_grid_1: inbox.images && inbox.images.length === 1
     }"
   >
 
