@@ -5,7 +5,7 @@
 
     <!-- Messages Area -->
 
-    <chat-area ref="areaRef" />
+    <chat-area ref="areaRef" style="height: calc(100vh - 103px); opacity: 1;" />
 
     <!-- End Messages Area -->
 
@@ -36,7 +36,6 @@ export default {
     this.$store.dispatch("room/setRoom", {})
   },
   mounted() {
-    this.$nextTick(() => this.configView())
     this.$nextTick(() => this.getRoom())
   },
   apollo: {
@@ -58,12 +57,6 @@ export default {
     }
   },
   methods: {
-    configView() {
-      const h1 = this.$refs.navRef.$el.offsetHeight
-      const h2 = this.$refs.toolRef.$el.offsetHeight
-      this.$refs.areaRef.$el.style.height = `calc(100vh - ${h1 + h2}px)`
-      this.$refs.areaRef.$el.style.opacity = '1'
-    },
 
     async getRoom() {
       try {

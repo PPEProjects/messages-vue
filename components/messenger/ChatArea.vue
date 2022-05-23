@@ -52,7 +52,6 @@ export default {
   mounted() {
     this.$nextTick(async () => {
       await this.onRefresh()
-      this.$refs.scroll.scrollTop = this.$refs.scroll.scrollHeight
     })
   },
   apollo: {
@@ -90,6 +89,10 @@ export default {
       const _oldlength = this.inboxs.length
       await this.getInboxs()
       const _newlength = this.inboxs.length
+
+      if(_oldlength === 0 && _newlength) {
+        this.$refs.scroll.scrollTop = this.$refs.scroll.scrollHeight
+      }
 
       // có dữ liệu
       if(_oldlength !== _newlength) {
