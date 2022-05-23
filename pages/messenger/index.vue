@@ -5,7 +5,7 @@
 
     <!-- Messages Area -->
 
-    <chat-area ref="areaRef" style="height: calc(100vh - 103px); opacity: 1;" />
+    <chat-area ref="areaRef" style="height: calc(100vh - 103px)" />
 
     <!-- End Messages Area -->
 

@@ -5,7 +5,6 @@
     loading-text="Loading..."
     loosing-text="Release to load more"
     pulling-text="Pull to load more"
-    class="opacity-0"
     @refresh="onRefresh"
   >
     <div ref="scroll" class="h-full overflow-y-auto scrollbar-hide pb-9">
