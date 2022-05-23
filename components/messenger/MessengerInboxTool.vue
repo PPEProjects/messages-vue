@@ -184,6 +184,15 @@ export default {
   computed: {
     ...mapGetters('user', ['user']),
   },
+  watch: {
+    attchEnable(val, prev) {
+      if (val) {
+        document.addEventListener('keyup', this.enterUpload)
+      } else {
+        document.removeEventListener('keyup', this.enterUpload)
+      }
+    }
+  },
   mounted() {
     this.$nextTick(() => this.configModal())
   },
@@ -312,7 +321,7 @@ export default {
             roomId: this.$route.params.id,
           }
         })
-        this.$notify({ message: 'Đăng thành công', type: 'success' })
+        // this.$notify({ message: 'Đăng thành công', type: 'success' })
       } catch (e) {}
 
     },
@@ -364,6 +373,12 @@ export default {
       this.imagesPreview = this.imagesPreview.filter((_, _index) => index !== _index)
       if(!this.files.length) {
         this.attchEnable = false
+      }
+    },
+
+    enterUpload(e) {
+      if(e.keyCode === 13) {
+        this.sendInbox()
       }
     }
   }
