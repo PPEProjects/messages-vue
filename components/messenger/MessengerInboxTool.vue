@@ -348,6 +348,7 @@ export default {
         this.attchEnable = true
       }
       this.showDrawn = false
+      this.resetSignaturePad()
     },
 
     buildWithPath(group, path) {
