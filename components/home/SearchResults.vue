@@ -88,7 +88,7 @@ export default {
       } else {
         this.choices = [...this.choices, user]
       }
-      this.$emit('choiseUser')
+      this.$emit('choiseUser', user)
     },
 
     removeAt(_index) {
