@@ -15,14 +15,35 @@
     <ul ref="results" class="relative bg-white">
       <li v-for="(user, index) in users" :key="index" class="py-4 border-b border-gray-100 last:border-0 search-item opacity-0">
 
-        <div
-          class="flex items-center cursor-pointer animate"
-          @click="$emit('choice', user)"
-        >
+        <div class="relative">
+          <div
+            class="flex items-center cursor-pointer relative z-10"
+            :class="{
+            'opacity-50': choices.findIndex((e) => e.id === user.id) >= 0
+          }"
+            @click="choiseUser(user)"
+          >
 
-          <avatar-border :avatar="user.avatar" />
+            <avatar-border :avatar="user.avatar" />
 
-          <h3 class="ml-3">{{ user.name }}</h3>
+            <h3 class="ml-3">{{ user.name }}</h3>
+
+          </div>
+
+          <button
+            class="absolute top-1/2 right-3 transform -translate-y-1/2 flex justify-center items-center z-20 w-5 h-5 rounded overflow-hidden border anime _checkbox-animation"
+            :class="{
+              'opacity-0': !(choices.findIndex((e) => e.id === user.id) >= 0)
+            }"
+          >
+            <van-icon
+              class="text-primary-500 animate transform delay-100"
+              :class="{
+                'opacity-0 scale-0': !(choices.findIndex((e) => e.id === user.id) >= 0)
+              }"
+              name="success"
+            />
+          </button>
 
         </div>
 
@@ -51,19 +72,28 @@ export default {
       initValue: this.value
     }
   },
+  watch: {
+    choices: {
+      handler() {
+        this.$emit('input', this.choices)
+      },
+      deep: true
+    }
+  },
   methods: {
     choiseUser(user) {
-      /* const _index = this.choices.findIndex((e) => e.id === user.id)
+      const _index = this.choices.findIndex((e) => e.id === user.id)
       if(_index >= 0) {
         this.choices = this.choices.filter((e) => e.id !== user.id)
       } else {
         this.choices = [...this.choices, user]
-      } */
+      }
+      this.$emit('choiseUser')
     },
 
-    /* removeAt(_index) {
+    removeAt(_index) {
       this.choices = this.choices.filter((_, index) => index !== _index)
-    } */
+    }
   }
 }
 </script>

@@ -46,7 +46,7 @@
 
         <div v-else>
 
-          <search-results v-if="searchResults.length" :users="searchResults.filter((e) => e.id !== user.id)" @choice="createRoom($event)" />
+          <search-results v-if="searchResults.length" v-model="choices" :users="searchResults.filter((e) => e.id !== user.id)" @choiseUser="createGroup()" />
 
           <div v-else>
             <img class="max-w-[200px] mx-auto block" src="/images/cat-cry.jpg" alt="" />
@@ -179,11 +179,6 @@ export default {
               translateY: [0, 50],
             })
           }
-    },
-
-    createRoom(_user) {
-      this.choices = [_user]
-      this.createGroup()
     }
   },
 }
