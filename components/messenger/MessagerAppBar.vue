@@ -4,7 +4,7 @@
     left-arrow
     @click-left="$router.back()"
   >
-    <template #right>
+    <template v-if="false" #right>
       <van-icon name="phone" size="22" />
     </template>
 

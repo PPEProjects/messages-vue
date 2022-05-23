@@ -9,7 +9,7 @@
       </template>
 
       <template #right>
-        <img class="rounded-full" width="35px" height="35px" src="/images/logo.jpeg" alt="" />
+        <van-icon color="#cccccc" size="20px" name="cross" @click="$router.back()" />
       </template>
 
     </van-nav-bar>
