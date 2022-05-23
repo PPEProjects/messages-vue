@@ -7,7 +7,7 @@
     pulling-text="Pull to load more"
     @refresh="onRefresh"
   >
-    <div ref="scroll" class="h-full overflow-y-auto scrollbar-hide pb-9">
+    <div ref="scroll" class="h-full overflow-y-auto scrollbar-hide py-9">
 
       <div
         v-for="(inbox, index) in inboxs"
@@ -90,7 +90,7 @@ export default {
       const _newlength = this.inboxs.length
 
       if(_oldlength === 0 && _newlength) {
-        this.$refs.scroll.scrollTop = this.$refs.scroll.scrollHeight
+        window.scrollTo(0, document.body.scrollHeight);
       }
 
       // có dữ liệu

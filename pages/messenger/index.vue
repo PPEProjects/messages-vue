@@ -1,15 +1,19 @@
 <template>
   <div>
 
-    <messager-app-bar ref="navRef" />
+    <div class="w-screen max-w-2xl mx-auto fixed z-50">
+      <messager-app-bar ref="navRef" />
+    </div>
 
     <!-- Messages Area -->
 
-    <chat-area ref="areaRef" style="height: calc(100vh - 103px)" />
+    <chat-area ref="areaRef" />
 
     <!-- End Messages Area -->
 
-    <messenger-inbox-tool ref="toolRef" />
+    <div class="w-screen max-w-2xl mx-auto fixed z-50 bottom-0">
+      <messenger-inbox-tool ref="toolRef" />
+    </div>
 
     <room-info />
 
