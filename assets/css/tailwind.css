@@ -110,3 +110,11 @@ button.ant-btn-sm > svg {
 .images-bubble .van-grid-item__content {
   background: transparent;
 }
+
+
+.record-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}

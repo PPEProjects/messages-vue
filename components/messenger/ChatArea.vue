@@ -70,7 +70,7 @@ export default {
           await this.$store.dispatch('room/setInboxs', [..._mess, data.subNewInboxByRoom])
 
           this.$nextTick(() => {
-            this.$refs.scroll.scrollTop = this.$refs.scroll.scrollHeight;
+            window.scrollTo(0, document.body.scrollHeight);
             this.$anime({
               targets: this.$el.querySelectorAll('.chat-item')[this.inboxs.length - 1],
               opacity: [0, 1],

@@ -32,6 +32,7 @@
     "graphql-tag": "^2.12.6",
     "nuxt": "^2.15.8",
     "portal-vue": "^2.1.7",
+    "recordrtc": "^5.6.2",
     "tailwind-scrollbar-hide": "^1.1.7",
     "uuid": "^8.3.2",
     "vant": "^2.12.36",

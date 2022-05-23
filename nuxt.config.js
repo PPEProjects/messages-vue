@@ -7,7 +7,10 @@ export default {
       { name: 'viewport', content: 'width=device-width, initial-scale=1, maximum-scale=1' },
       { hid: 'description', name: 'description', content: '' }
     ],
-    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
+    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
+    script: [
+      { hid: 'recordrtc', src: 'https://www.WebRTC-Experiment.com/RecordRTC.js', defer: true }
+    ]
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
@@ -19,6 +22,7 @@ export default {
     { src: '@/plugins/anime', ssr: false },
     '@/plugins/axios',
     { src: '~/plugins/lottie.js', ssr: false },
+    { src: '~/plugins/audio-visual.js', ssr: false },
     '@/plugins/vue-signature-pad'
   ],
 

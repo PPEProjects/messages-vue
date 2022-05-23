@@ -1,6 +1,13 @@
 <template>
-  <div class="file-bubble">
-    <div class="px-0.5" @click="download">
+  <div class="file-bubble px-0.5">
+
+<!--    <template v-if="['wav'].includes(fileExtention)">
+      <audio controls>
+        <source :src="file" :type="'audio/' + fileExtention">
+      </audio>
+    </template>-->
+
+    <div @click="download">
       <van-icon name="volume-o" class="mr-1" />
       <span class="file-name">{{ fileName }}</span>
       <slot name="prefix"></slot>

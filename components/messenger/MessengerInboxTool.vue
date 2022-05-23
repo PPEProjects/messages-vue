@@ -4,7 +4,15 @@
     <div class="absolute bottom-0 px-4 py-2 border-t border-gray-100 w-full z-10 bg-white">
       <div class="w-full bg-gray-50 px-3 py-2 flex items-center rounded-[30px]">
 
-        <van-popover v-if="!attchEnable" v-model="showPopover" trigger="click" :actions="actions" placement="top-start" @select="onSelect">
+        <div v-if="showRecorder" class="van-popover__wrapper">
+          <button class="w-[18px] h-[18px] relative top-[1px]" @click="closeRecord()">
+            <van-icon id="closeAudio" ref="closeAudio" size="18px" name="add-o" color="#6a7280"/>
+          </button>
+        </div>
+
+        <van-popover
+v-else-if="!attchEnable" v-model="showPopover" trigger="click" :actions="actions"
+                     placement="top-start" @select="onSelect">
           <template #reference>
             <button class="w-[18px] h-[18px] relative top-[1px]">
               <van-icon size="18px" name="add-o" color="#6a7280"/>
@@ -12,7 +20,9 @@
           </template>
         </van-popover>
 
-        <button v-else-if="imagesAttached" class="w-[18px] h-[18px] relative" :disabled="files.length >= 30" @click="onSelect(null, 0)">
+        <button
+v-else-if="imagesAttached" class="w-[18px] h-[18px] relative" :disabled="files.length >= 30"
+                @click="onSelect(null, 0)">
           <van-icon size="18px" name="photo-o" color="#6a7280"/>
         </button>
 
@@ -32,8 +42,10 @@
                 fit="cover"
               />
 
-              <button class="absolute top-1 right-2.5 text-white bg-rose-500 w-5 h-5 rounded-full overflow-hidden border-2 border-white flex justify-center items-center shadow-md shadow-rose-300 z-20" @click="removeAt(index)">
-                <van-icon size="10" name="cross" />
+              <button
+                class="absolute top-1 right-2.5 text-white bg-rose-500 w-5 h-5 rounded-full overflow-hidden border-2 border-white flex justify-center items-center shadow-md shadow-rose-300 z-20"
+                @click="removeAt(index)">
+                <van-icon size="10" name="cross"/>
               </button>
 
             </div>
@@ -44,12 +56,20 @@
           <file-bubble v-else class="relative" :file="files[0].name" :download-enabled="false">
 
             <template #prefix>
-              <button class="absolute top-1 right-2.5 text-white bg-rose-500 w-5 h-5 rounded-full overflow-hidden border-2 border-white flex justify-center items-center shadow-md shadow-rose-300 z-20" @click="removeAt(0)">
-                <van-icon size="10" name="cross" />
+              <button
+                class="absolute top-1 right-2.5 text-white bg-rose-500 w-5 h-5 rounded-full overflow-hidden border-2 border-white flex justify-center items-center shadow-md shadow-rose-300 z-20"
+                @click="removeAt(0)">
+                <van-icon size="10" name="cross"/>
               </button>
             </template>
 
           </file-bubble>
+
+        </div>
+
+        <div v-else-if="showRecorder" class="w-full px-3 flex">
+
+          <div class="ml-auto transform translate-x-[30px] text-sm text-gray-500">{{ recordTime }}ms</div>
 
         </div>
 
@@ -64,28 +84,48 @@
           @keyup.enter="message && sendInbox()"
         />
 
-        <button
-          class="w-[18px] h-[18px] animate transform"
+        <div
+          v-if="showRecorder"
+          class="w-[18px] h-[18px] animate transform relative"
           :class="{
-          'translate-x-[30px]': !message && !files.length,
-        }"
-          @click="showDrawn = true"
+              'translate-x-[30px]': !message && !files.length,
+            }"
         >
-          <svg class="fill-current text-gray-500" width="18" height="18">
-            <use xlink:href="#i-draw"/>
-          </svg>
-        </button>
+          <div class="record-icon cursor-pointer" @click="stopRecord()">
+            <v-lottie-player
+              width='28px'
+              height='28px'
+              loop
+              path="https://assets7.lottiefiles.com/packages/lf20_m0npUX.json"
+            />
+          </div>
+        </div>
 
-        <button
-          class="w-[18px] h-[18px] animate transform ml-2"
-          :class="{
-          'translate-x-[30px]': !message && !files.length,
-        }"
-        >
-          <svg class="fill-current text-gray-500" width="18" height="18">
-            <use xlink:href="#i-mic"/>
-          </svg>
-        </button>
+        <template v-else>
+          <button
+            class="w-[18px] h-[18px] animate transform"
+            :class="{
+              'translate-x-[30px]': !message && !files.length,
+            }"
+            @click="showDrawn = true"
+          >
+            <svg class="fill-current text-gray-500" width="18" height="18">
+              <use xlink:href="#i-draw"/>
+            </svg>
+          </button>
+
+          <button
+            class="w-[18px] h-[18px] animate transform ml-2"
+            :class="{
+              'translate-x-[30px]': !message && !files.length,
+            }"
+            @click="openRecord"
+          >
+            <svg class="fill-current text-gray-500" width="18" height="18">
+              <use xlink:href="#i-mic"/>
+            </svg>
+          </button>
+        </template>
 
         <button
           class="w-[18px] h-[18px] ml-3 animate"
@@ -157,12 +197,13 @@
 
 <script>
 import {mapGetters} from "vuex";
-import { v4 as uuidv4 } from 'uuid'
+import {v4 as uuidv4} from 'uuid'
 
 import {SEND_FILE, SEND_IMAGES, SEND_MESSAGE} from "~/apollo/mutation/message.mutation";
 
 export default {
   name: "MessengerInboxTool",
+  components: {},
   data() {
     return {
       message: '',
@@ -178,7 +219,11 @@ export default {
         {text: 'File', icon: 'orders-o'}
       ],
       imagesPreview: [],
-      files: []
+      files: [],
+      showRecorder: false,
+      recorder: undefined,
+      timer: undefined,
+      recordTime: 0
     }
   },
   computed: {
@@ -191,12 +236,75 @@ export default {
       } else {
         document.removeEventListener('keyup', this.enterUpload)
       }
+    },
+    showRecorder(val) {
+      // rotateZ(45deg)
+      if (val) {
+        this.$nextTick(() => {
+          setTimeout(() => {
+            this.$anime({
+              targets: this.$refs.closeAudio,
+              rotateZ: [0, 45]
+            });
+          }, 300)
+        })
+      }
     }
   },
   mounted() {
     this.$nextTick(() => this.configModal())
   },
   methods: {
+
+    closeRecord() {
+      this.$anime({
+        targets: this.$refs.closeAudio,
+        rotateZ: [45, 0],
+        complete: () => {
+          this.showRecorder = false
+        }
+      });
+    },
+
+    async openRecord() {
+      this.showRecorder = true
+      const stream = await navigator.mediaDevices.getUserMedia({audio: true});
+      // eslint-disable-next-line no-undef
+      this.recorder = new RecordRTCPromisesHandler(stream, {
+        type: 'audio',
+        // eslint-disable-next-line no-undef
+        recorderType: StereoAudioRecorder
+      });
+      this.recorder.startRecording();
+
+      this.timer = setInterval(() => {
+        this.recordTime++
+      }, 1000)
+
+      // await recorder.stopRecording();
+      // const blob = await recorder.getBlob();
+      // eslint-disable-next-line no-undef
+      // invokeSaveAsDialog(blob);
+    },
+
+    async stopRecord() {
+
+      clearInterval(this.timer)
+      await this.recorder.stopRecording();
+      const blob = await this.recorder.getBlob();
+
+      const file = new File([blob], 'audio.wav', {
+        type: 'audio/wav'
+      })
+
+      this.files.push(file)
+
+      this.showRecorder = false
+      this.recordTime = 0
+      this.attchEnable = true
+
+    },
+
     onSelect(action, index) {
       // clear input nếu có
       document.querySelector('#inputAttch')?.remove();
@@ -230,11 +338,11 @@ export default {
         }
 
       } else if (/^image/.test(_files[0].type)) {
-          this.imagesAttached = true
-          this.imagesPreview.push(URL.createObjectURL(_files[0]))
-        } else {
-          this.imagesAttached = false
-        }
+        this.imagesAttached = true
+        this.imagesPreview.push(URL.createObjectURL(_files[0]))
+      } else {
+        this.imagesAttached = false
+      }
     },
 
     async uploadImage(file, path, type) {
@@ -253,9 +361,9 @@ export default {
     async sendInbox() {
       this.isLoading = true
 
-      if(this.attchEnable) {
+      if (this.attchEnable) {
 
-        if(this.imagesAttached) {
+        if (this.imagesAttached) {
           const _filesName = this.files.map((file) => ({
             file: this.buildFilename('images', file.type.replace(/^image\//, '')),
             extension: file.type.replace(/^image\//, '')
@@ -277,7 +385,7 @@ export default {
 
           const _images = await Promise.all(_files)
 
-          await this.sendAttach(SEND_IMAGES, { images: _images.map((e) => process.env.VITE_BUNNY_CDN + e) })
+          await this.sendAttach(SEND_IMAGES, {images: _images.map((e) => process.env.VITE_BUNNY_CDN + e)})
 
         } else {
 
@@ -290,7 +398,7 @@ export default {
 
           await this.uploadImage(_file, _filename.file, _filename.extension)
 
-          await this.sendAttach(SEND_FILE, { file: process.env.VITE_BUNNY_CDN + _filename.file })
+          await this.sendAttach(SEND_FILE, {file: process.env.VITE_BUNNY_CDN + _filename.file})
 
         }
 
@@ -322,7 +430,8 @@ export default {
           }
         })
         // this.$notify({ message: 'Đăng thành công', type: 'success' })
-      } catch (e) {}
+      } catch (e) {
+      }
 
     },
 
@@ -372,13 +481,13 @@ export default {
     removeAt(index) {
       this.files = this.files.filter((_, _index) => index !== _index)
       this.imagesPreview = this.imagesPreview.filter((_, _index) => index !== _index)
-      if(!this.files.length) {
+      if (!this.files.length) {
         this.attchEnable = false
       }
     },
 
     enterUpload(e) {
-      if(e.keyCode === 13) {
+      if (e.keyCode === 13) {
         this.sendInbox()
       }
     }
