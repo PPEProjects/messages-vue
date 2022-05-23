@@ -22,7 +22,6 @@ export default {
     { src: '@/plugins/anime', ssr: false },
     '@/plugins/axios',
     { src: '~/plugins/lottie.js', ssr: false },
-    { src: '~/plugins/audio-visual.js', ssr: false },
     '@/plugins/vue-signature-pad'
   ],
 
