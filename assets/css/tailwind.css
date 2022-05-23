@@ -45,11 +45,14 @@ button.ant-btn-sm > svg {
   right: -12px;
   -webkit-transform: scaleX(-1);
   transform: scaleX(-1);
+}
+
+.chat-item[data-current=true]._content .bubble-content:before {
   border-right-color: #146be6;
   border-top: 10px solid #146be6;
 }
 
-.chat-item[data-current=true] .bubble-content {
+.chat-item[data-current=true]._content .bubble-content {
   background: linear-gradient(45deg, #7694f8, #3b66f5, #3b66f5);
   color: #fff;
 }
@@ -70,6 +73,7 @@ button.ant-btn-sm > svg {
 
 .chat-item._images:not(._file) .bubble-content {
   width: 100%;
+  padding: 5px;
 }
 
 #messageInput .file-bubble .file-name {

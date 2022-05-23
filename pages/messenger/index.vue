@@ -95,4 +95,8 @@ export default {
 .images-bubble .van-grid-item__content {
   padding: 8px 8px;
 }
+
+.van-image-preview__image {
+  background: white;
+}
 </style>
