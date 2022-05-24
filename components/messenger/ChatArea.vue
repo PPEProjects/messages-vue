@@ -65,7 +65,7 @@ export default {
         },
         async result ({ data }) {
 
-          const _mess = Object.assign({}, this.inboxs)
+          const _mess = [...this.inboxs]
 
           await this.$store.dispatch('room/setInboxs', [..._mess, data.subNewInboxByRoom])
 
@@ -125,7 +125,7 @@ export default {
           },
           fetchPolicy: 'no-cache'
         })
-        const _mess = Object.assign({}, this.inboxs)
+        const _mess = [...this.inboxs]
         await this.$store.dispatch('room/setInboxs', [...data.inboxsGet, ..._mess])
 
       } catch (e) {}

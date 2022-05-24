@@ -326,7 +326,7 @@ export default {
     },
 
     changeInputFiles({target}) {
-      const _files = Object.assign({}, target.files)
+      const _files = [...target.files]
       this.files.push(..._files)
 
       this.attchEnable = true
