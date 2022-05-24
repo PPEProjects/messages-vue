@@ -5,7 +5,9 @@
       z-index="40"
     >
       <template #left>
-        <img class="rounded-full" width="35px" height="35px" src="/images/logo.jpeg" alt="" />
+        <a href="https://v2.smileeye.edu.vn/goals">
+          <img class="rounded-full" width="35px" height="35px" src="/images/logo.jpeg" alt="" />
+        </a>
       </template>
 
       <template #right>
