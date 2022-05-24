@@ -120,7 +120,7 @@ export default {
             this.rooms.push(data.subMyRooms)
             this.$store.dispatch('home/setRooms', [data.subMyRooms, ...this.rooms])
           } else {
-            const _rooms = structuredClone(this.rooms)
+            const _rooms = Object.assign({}, this.rooms)
             _rooms.splice(_index, 1)
             this.$store.dispatch('home/setRooms', [data.subMyRooms, ..._rooms])
           }
