@@ -27,3 +27,11 @@ export const UPDATE_ROOM = gql`
     }
   }
 `
+
+export const READ_MESSAGE = gql`
+  mutation MessageRead($input: ReadMessageInput!) {
+    messageRead(input: $input) {
+      id
+    }
+  }
+`

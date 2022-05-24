@@ -18,10 +18,11 @@ export default {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
-    '@/plugins/vant',
+    { src: '@/plugins/vant', ssr: true },
     {src: '@/plugins/anime', ssr: false},
     '@/plugins/axios',
     {src: '~/plugins/lottie.js', ssr: false},
+    {src: '~/plugins/observe-visibility.js', ssr: false},
     '@/plugins/vue-signature-pad'
   ],
 

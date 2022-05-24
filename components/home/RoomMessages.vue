@@ -9,36 +9,47 @@
         <avatar-border :avatar="room.avatar" class="relative flex-shrink-0" :onlines="onlines.length" />
       </div>
 
-      <div ref="contentRef" class="w-full pl-3">
-        <div class="flex items-center justify-between">
-          <h4 class="font-medium line-clamp-1">
-            {{ roomName }}
-          </h4>
+      <div
+        class="w-full"
+        :class="{
+          'opacity-50': isRead
+        }"
+      >
+        <div
+          ref="contentRef"
+          class="w-full pl-3"
+        >
+          <div class="flex items-center justify-between">
+            <h4 class="font-medium line-clamp-1">
+              {{ roomName }}
+            </h4>
 
-          <span v-if="isRead" ref="readAt" class="ml-4 flex items-center text-gray-500 flex-shrink-0 opacity-90">
+            <span v-if="isRead" ref="readAt" class="ml-4 flex items-center text-gray-500 flex-shrink-0 opacity-90">
             <svg class="fill-current" width="18" height="18">
               <use xlink:href="#i-check"/>
             </svg>
           <span class="text-[12px] ml-1">Đã xem</span>
         </span>
 
+          </div>
+          <p class="line-clamp-2 text-gray-500 text-sm">
+
+            <template v-if="inbox.content">
+              {{ inbox.content }}
+            </template>
+
+            <template v-else-if="inbox.images">
+              {{ inbox.from.name }} đã gửi {{ inbox.images.length }} hình ảnh
+            </template>
+
+            <template v-else-if="inbox.file">
+              {{ inbox.from.name }} đã gửi một tệp đính kèm
+            </template>
+
+          </p>
         </div>
-        <p class="line-clamp-2 text-gray-500 text-sm">
-
-          <template v-if="inbox.content">
-            {{ inbox.content }}
-          </template>
-
-          <template v-else-if="inbox.images">
-           {{ inbox.from.name }} đã gửi {{ inbox.images.length }} hình ảnh
-          </template>
-
-          <template v-else-if="inbox.file">
-            {{ inbox.from.name }} đã gửi một tệp đính kèm
-          </template>
-
-        </p>
       </div>
+
     </div>
   </NuxtLink>
 </template>
@@ -71,9 +82,16 @@ export default {
   computed: {
     ...mapGetters('user', ['user']),
     isRead() {
-      return this.inbox.readAt?.includes((e) => {
-        return e.user.userID === String(this.user.id);
-      });
+
+      let _index = -1
+
+      this.inbox.readAt?.forEach((e, index) => {
+        if(String(e.user.userID)) {
+          _index = index
+        }
+      })
+
+      return _index > -1
     },
     roomName() {
       if(this.room.name) {
