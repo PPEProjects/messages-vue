@@ -10,9 +10,6 @@ export default {
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
       { rel: 'stylesheet', href: '/style/custsom.css' }
-    ],
-    script: [
-      {hid: 'recordrtc', src: 'https://www.WebRTC-Experiment.com/RecordRTC.js', defer: true}
     ]
   },
 
@@ -94,7 +91,7 @@ export default {
   },
 
   // PWA module configuration: https://go.nuxtjs.dev/pwa
-  /* pwa: {
+  pwa: {
     manifest: {
       name: 'Smileeye Messager',
       lang: 'vi',
@@ -104,7 +101,7 @@ export default {
     icon: {
       source: 'static/pwa/icon.jpeg'
     }
-  }, */
+  },
 
   router: {
     middleware: 'auth',

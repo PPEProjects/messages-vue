@@ -196,8 +196,9 @@ v-else-if="imagesAttached" class="w-[18px] h-[18px] relative" :disabled="files.l
 </template>
 
 <script>
-import {mapGetters} from "vuex";
+import {mapGetters} from "vuex"
 import {v4 as uuidv4} from 'uuid'
+import RecordRTC from 'recordrtc'
 
 import {SEND_FILE, SEND_IMAGES, SEND_MESSAGE} from "~/apollo/mutation/message.mutation";
 
@@ -270,10 +271,10 @@ export default {
       this.showRecorder = true
       const stream = await navigator.mediaDevices.getUserMedia({audio: true});
       // eslint-disable-next-line no-undef
-      this.recorder = new RecordRTCPromisesHandler(stream, {
+      this.recorder = new RecordRTC.RecordRTCPromisesHandler(stream, {
         type: 'audio',
         // eslint-disable-next-line no-undef
-        recorderType: StereoAudioRecorder
+        recorderType: RecordRTC.StereoAudioRecorder
       });
       this.recorder.startRecording();
 
