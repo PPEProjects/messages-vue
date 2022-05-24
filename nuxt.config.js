@@ -18,10 +18,11 @@ export default {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
-    '@/plugins/vant',
+    { src: '@/plugins/vant', ssr: true },
     {src: '@/plugins/anime', ssr: false},
     '@/plugins/axios',
     {src: '~/plugins/lottie.js', ssr: false},
+    {src: '~/plugins/observe-visibility.js', ssr: false},
     '@/plugins/vue-signature-pad'
   ],
 
@@ -42,7 +43,7 @@ export default {
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
     // https://go.nuxtjs.dev/pwa
-    // '@nuxtjs/pwa',
+    '@nuxtjs/pwa',
     'portal-vue/nuxt',
     '@nuxtjs/apollo',
     'cookie-universal-nuxt',

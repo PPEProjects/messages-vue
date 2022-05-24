@@ -39,6 +39,7 @@
     "vue": "^2.6.14",
     "vue-animejs": "^2.1.1",
     "vue-lottie-player": "^0.1.9",
+    "vue-observe-visibility": "^1.0.0",
     "vue-server-renderer": "^2.6.14",
     "vue-signature-pad": "^2.0.5",
     "vue-template-compiler": "^2.6.14",

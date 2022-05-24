@@ -28,6 +28,11 @@
         </message-bubble>
       </div>
 
+
+      <client-only>
+        <div v-if="inboxs.length" v-observe-visibility="visibilityChanged"></div>
+      </client-only>
+
     </div>
   </van-pull-refresh>
 </template>
@@ -36,6 +41,7 @@
 import {mapGetters} from "vuex";
 import {GET_INBOXS} from "~/apollo/queries/inbox.queries";
 import {SUB_INBOX_BY_ROOM} from "~/apollo/subscription/inbox.subscription";
+import {READ_MESSAGE} from "~/apollo/mutation/room.mutation";
 
 export default {
   name: "ChatArea",
@@ -108,6 +114,23 @@ export default {
         })
       }
 
+    },
+
+    async visibilityChanged (isVisible) {
+      if(isVisible) {
+        try {
+          await this.$apollo.mutate({
+            mutation: READ_MESSAGE,
+            variables: {
+              input: {
+                anchor: this.inboxs[this.inboxs.length - 1].id,
+                room: this.$route.params.id,
+                userID: String(this.user.id)
+              }
+            }
+          })
+        } catch (e) {}
+      }
     },
 
     async getInboxs() {
