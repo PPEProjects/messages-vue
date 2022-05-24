@@ -13,7 +13,7 @@
         v-for="(inbox, index) in inboxs"
         :key="inbox.id"
         :data-index="index"
-        class=""
+        class="px-4"
       >
         <message-bubble :inbox="inbox">
 
