@@ -23,38 +23,16 @@ export const SUB_USER_ONLINE = gql`
 export const SUB_MY_ROOMS = gql`
   subscription SubMyRooms($userId: String!) {
     subMyRooms(userID: $userId) {
-      room {
+      id
+      name
+      avatar
+      users {
         id
         name
+        userID
         avatar
-        users {
-          id
-          name
-          userID
-          avatar
-        }
-        updatedAt
       }
-      messages {
-        id
-        from {
-          id
-          name
-          userID
-          avatar
-          createdAt
-        }
-        content
-        readAt {
-          user {
-            id
-            name
-            userID
-            avatar
-          }
-          time
-        }
-      }
+      updatedAt
     }
   }
 `

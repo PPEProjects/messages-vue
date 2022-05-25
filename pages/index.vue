@@ -113,18 +113,18 @@ export default {
         result ({ data }) {
           let _index = -1
           for (let i = 0; i < this.rooms.length; i++) {
-            if(this.rooms[i].room.id === data.subMyRooms.room.id) {
+            if(this.rooms[i].id === data.subMyRooms.id) {
                _index = i
               break
             }
           }
           if(_index === -1) {
-            this.rooms.push(data.subMyRooms)
             this.$store.dispatch('home/setRooms', [data.subMyRooms, ...this.rooms])
           } else {
-            const _rooms = Object.assign({}, this.rooms)
-            _rooms.splice(_index, 1)
-            this.$store.dispatch('home/setRooms', [data.subMyRooms, ..._rooms])
+            const _rooms = [...this.rooms]
+            _rooms[_index] =  data.subMyRooms
+            _rooms[_index].updatedAt = Date.now()
+            this.$store.dispatch('home/setRooms', _rooms)
           }
         },
       }

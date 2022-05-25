@@ -3,8 +3,6 @@ export const actions = {
 
     const queryToken = route.query._token
 
-    console.log('queryToken', queryToken)
-
     if(queryToken) {
       this.$cookies.set('_token', route.query._token)
       await dispatch('user/getMe')

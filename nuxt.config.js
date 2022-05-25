@@ -18,7 +18,7 @@ export default {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
-    { src: '@/plugins/vant', ssr: true },
+    { src: '@/plugins/vant', ssr: false },
     {src: '@/plugins/anime', ssr: false},
     '@/plugins/axios',
     {src: '~/plugins/lottie.js', ssr: false},
