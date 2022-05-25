@@ -11,7 +11,7 @@ export const getters = {
 // mutations
 export const mutations = {
   SET_ROOMS(state, data) {
-    state.rooms = data
+    state.rooms = data.sort((a, b) => b.updatedAt - a.updatedAt)
   },
 }
 
