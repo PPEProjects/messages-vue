@@ -121,7 +121,21 @@
                 :key="user.id"
                 :data-index="index"
                 :member="user"
-              />
+              >
+
+                <div v-if="calling.includes(user.userID)" class="mr-6 flex-shrink-0 px-3 py-1.5 bg-green-600 text-white rounded-full flex items-center shadow-md shadow-green-200">
+
+
+                  <svg class="fill-current" width="20" height="20">
+                    <use xlink:href="#i-videocam" />
+                  </svg>
+
+                  <span class="text-white text-sm ml-1.5">In Calling</span>
+
+                </div>
+
+              </members-item>
+
             </div>
 
             <div ref="searchResult" class="bg-white top-0 left-0 absolute w-full opacity-0" :class="[showSearch ? 'z-20' : 'z-10 pointer-events-none']">
@@ -188,7 +202,7 @@ export default {
   },
   computed: {
     ...mapGetters('user', ['user']),
-    ...mapGetters('room', ['room', 'members']),
+    ...mapGetters('room', ['room', 'members', 'calling']),
     showSearch() {
       return this.keyword.length > 0
     }

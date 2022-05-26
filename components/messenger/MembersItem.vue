@@ -18,7 +18,11 @@
           </div>
         </div>
       </div>
+
+      <slot></slot>
+
     </div>
+
     <template #right>
       <van-button text="Delete" type="danger" class="delete-button" />
     </template>

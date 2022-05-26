@@ -10,6 +10,10 @@ export default {
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
       { rel: 'stylesheet', href: '/style/custsom.css' }
+    ],
+    script: [
+      { hid: 'jquery', src: 'https://code.jquery.com/jquery-3.5.1.min.js', defer: true },
+      { hid: 'jitsi', src: '/external_api.js', defer: true }
     ]
   },
 
@@ -18,8 +22,9 @@ export default {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
-    { src: '@/plugins/vant', ssr: true },
+    '@/plugins/vant',
     {src: '@/plugins/anime', ssr: false},
+    {src: '@/plugins/jitsi', ssr: false},
     '@/plugins/axios',
     {src: '~/plugins/lottie.js', ssr: false},
     {src: '~/plugins/observe-visibility.js', ssr: false},
@@ -43,7 +48,7 @@ export default {
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
     // https://go.nuxtjs.dev/pwa
-    //'@nuxtjs/pwa',
+    // '@nuxtjs/pwa',
     'portal-vue/nuxt',
     '@nuxtjs/apollo',
     'cookie-universal-nuxt',

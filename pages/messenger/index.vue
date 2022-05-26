@@ -4,7 +4,6 @@
     <div class="w-screen max-w-2xl mx-auto fixed z-50">
       <messager-app-bar ref="navRef" />
     </div>
-
     <!-- Messages Area -->
 
     <chat-area ref="areaRef" />
@@ -21,9 +20,9 @@
 </template>
 
 <script>
-import {mapGetters} from "vuex";
-import {SUB_USER_ONLINE} from "~/apollo/subscription/room.subscription";
-import {GET_ROOM} from "~/apollo/queries/room.queries";
+import {mapActions, mapGetters} from "vuex";
+import {SUB_ROOM_CALLING, SUB_USER_ONLINE} from "~/apollo/subscription/room.subscription";
+import {GET_ROOM, GET_ROOM_CALLING} from "~/apollo/queries/room.queries";
 
 export default {
   name: "MessengerRoom",
@@ -57,10 +56,39 @@ export default {
          this.$store.dispatch('room/setRoom', data.roomOnlines.room)
          this.$store.dispatch('room/setOnlines', data.roomOnlines.onlines);
         },
+      },
+      subCallingRooms: {
+        query: SUB_ROOM_CALLING,
+        variables() {
+          return {
+            roomId: this.$route.params.id
+          }
+        },
+        result ({ data }) {
+          // Let's update the local data
+          this.setCalling(data.subCallingRooms)
+        },
       }
+    },
+    getRoomCalling: {
+      query: GET_ROOM_CALLING,
+      variables() {
+        return {
+          roomId: this.$route.params.id
+        }
+      },
+      manual: true,
+      result ({ data, loading }) {
+        if (!loading) {
+          this.setCalling(data.getRoomCalling)
+        }
+      },
+      fetchPolicy: 'no-cache'
     }
   },
   methods: {
+
+    ...mapActions('room', ['setCalling']),
 
     async getRoom() {
       try {
