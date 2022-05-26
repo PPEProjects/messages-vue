@@ -22,6 +22,7 @@ export default ({ app, store }, inject) => {
       const newWindow = window.open('https://chat1.smileeye.edu.vn/groupcall?room=' + id , 'Smileeye Call','resizable=yes, width=' + popupWinWidth + ', height=' + popupWinHeight + ', top=' + top + ', left=' + left);
       if (newWindow.onbeforeunload) {
         // bị huỷ mở cửa sổ
+        $nuxt.$emit('videoConferenceLeftCallback')
         onCancel()
       }
     },
