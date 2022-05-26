@@ -298,6 +298,8 @@ export default {
         type: 'audio/wav'
       })
 
+      this.imagesAttached = false
+
       this.files.push(file)
 
       this.showRecorder = false
