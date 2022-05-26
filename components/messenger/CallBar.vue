@@ -96,6 +96,7 @@ export default {
     })
     this.$nuxt.$on('videoConferenceLeftCallback', () => {
       this.inCalling = false
+      this.showBadge = false
     })
     window.test = this.showAnimation
   },
