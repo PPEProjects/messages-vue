@@ -172,7 +172,9 @@ v-else-if="imagesAttached" class="w-[18px] h-[18px] relative" :disabled="files.l
 
           <van-button
             class="px-2" type="primary" size="small" round :loading="uploadingImage"
-            @click="onConfirmSignaturePad()">Send
+            @click="onConfirmSignaturePad()"
+          >
+            Done
           </van-button>
 
         </div>
@@ -297,6 +299,8 @@ export default {
       const file = new File([blob], 'audio.wav', {
         type: 'audio/wav'
       })
+
+      this.imagesAttached = false
 
       this.files.push(file)
 
