@@ -22,7 +22,7 @@ export default {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
-    '@/plugins/vant',
+    {src: '@/plugins/vant', ssr: true},
     {src: '@/plugins/anime', ssr: false},
     {src: '@/plugins/jitsi', ssr: false},
     '@/plugins/axios',
@@ -48,7 +48,6 @@ export default {
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
     // https://go.nuxtjs.dev/pwa
-    // '@nuxtjs/pwa',
     'portal-vue/nuxt',
     '@nuxtjs/apollo',
     'cookie-universal-nuxt',
@@ -95,19 +94,6 @@ export default {
       }
     }
   },
-
-  // PWA module configuration: https://go.nuxtjs.dev/pwa
-  /* pwa: {
-    manifest: {
-      name: 'Smileeye Messager',
-      lang: 'vi',
-      useWebmanifestExtension: false,
-      start_url: '/'
-    },
-    icon: {
-      source: 'static/pwa/icon.jpeg'
-    }
-  }, */
 
   router: {
     middleware: 'auth',
