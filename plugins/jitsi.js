@@ -19,7 +19,7 @@ export default ({ app, store }, inject) => {
 
       const left = (screen.width - popupWinWidth) / 2;
       const top = (screen.height - popupWinHeight) / 4;
-      const newWindow = window.open('http://localhost:3000/groupcall?room=' + id , 'Smileeye Call','resizable=yes, width=' + popupWinWidth + ', height=' + popupWinHeight + ', top=' + top + ', left=' + left);
+      const newWindow = window.open('https://chat1.smileeye.edu.vn/groupcall?room=' + id , 'Smileeye Call','resizable=yes, width=' + popupWinWidth + ', height=' + popupWinHeight + ', top=' + top + ', left=' + left);
       if (newWindow.onbeforeunload) {
         // bị huỷ mở cửa sổ
         onCancel()
