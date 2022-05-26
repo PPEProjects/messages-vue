@@ -4,7 +4,6 @@
     <div class="w-screen max-w-2xl mx-auto fixed z-50">
       <messager-app-bar ref="navRef" />
     </div>
-
     <!-- Messages Area -->
 
     <chat-area ref="areaRef" />

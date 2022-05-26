@@ -3,8 +3,9 @@
   <van-nav-bar
     left-arrow
     @click-left="$router.back()"
+    @click-right="callAction()"
   >
-    <template v-if="false" #right>
+    <template #right>
       <van-icon name="phone" size="22" />
     </template>
 
@@ -56,6 +57,9 @@ export default {
       if(this.members.length) {
         this.$nuxt.$emit("showRoomInfo");
       }
+    },
+    callAction() {
+      this.$jitsi.open(1200, 800)
     }
   }
 }
