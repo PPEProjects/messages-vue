@@ -36,3 +36,33 @@ export const SUB_MY_ROOMS = gql`
     }
   }
 `
+
+export const SUB_ROOM_CALLING = gql`
+  subscription Subscription($roomId: String!) {
+    subCallingRooms(roomID: $roomId)
+  }
+`
+
+
+export const SUB_CALLING = gql`
+  subscription Subscription($roomId: String!, $userId: String!) {
+    subCalling(roomID: $roomId, userID: $userId)
+  }
+`
+
+export const SUB_WAITING_CALLING = gql`
+  subscription SubWaitingCall($userId: String!) {
+    subWaitingCall(userID: $userId) {
+      id
+      name
+      avatar
+      users {
+        id
+        name
+        userID
+        avatar
+      }
+      createdAt
+    }
+  }
+`

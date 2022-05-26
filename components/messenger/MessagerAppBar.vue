@@ -6,7 +6,11 @@
     @click-right="callAction()"
   >
     <template #right>
-      <van-icon name="phone" size="22" />
+      <button class="text-primary-500 flex justify-center items-center">
+        <svg class="fill-current" width="20" height="20">
+          <use xlink:href="#i-videocam" />
+        </svg>
+      </button>
     </template>
 
     <template #title>
@@ -37,6 +41,7 @@
           >
         </div>
       </div>
+
     </template>
 
   </van-nav-bar>
@@ -48,9 +53,27 @@ import {mapGetters} from "vuex";
 
 export default {
   name: "MessagerAppBar",
+  data() {
+    return {
+      showCallBadge: false
+    }
+  },
   computed: {
     ...mapGetters('user', ['user']),
-    ...mapGetters('room', ['room', 'members']),
+    ...mapGetters('room', ['room', 'members', 'calling']),
+    countCalling() {
+      return this.calling.length
+    }
+  },
+  watch: {
+    countCalling(val) {
+      if(!this.showCallBadge && val) {
+        this.showCallBadge = true
+      }
+      if(!val) {
+        this.showCallBadge = false
+      }
+    }
   },
   methods: {
     showRoomInfo() {
@@ -59,7 +82,7 @@ export default {
       }
     },
     callAction() {
-      this.$jitsi.open(1200, 800)
+      this.$jitsi.open(this.room.id, 1200, 800)
     }
   }
 }

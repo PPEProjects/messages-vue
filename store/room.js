@@ -2,7 +2,8 @@ export const state = () => ({
   onlines: [],
   messages: [],
   room: {},
-  inboxs: []
+  inboxs: [],
+  calling: []
 })
 
 // getters
@@ -12,7 +13,8 @@ export const getters = {
   room: (state) => state.room,
   members: state => state.room.users || [],
   inboxs: state => state.inboxs,
-  offset: state => state.inboxs.filter((e) => e.content).length
+  offset: state => state.inboxs.filter((e) => e.content).length,
+  calling: state => state.calling,
 }
 
 // mutations
@@ -26,6 +28,10 @@ export const mutations = {
 
   SET_INBOXS(state, data) {
     state.inboxs = data
+  },
+
+  SET_CALLING(state, data) {
+    state.calling = data
   }
 }
 
@@ -40,5 +46,8 @@ export const actions = {
   },
   setInboxs({ commit }, payload) {
     commit('SET_INBOXS', payload)
+  },
+  setCalling({ commit }, payload) {
+    commit('SET_CALLING', payload)
   }
 }

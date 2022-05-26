@@ -58,3 +58,9 @@ export const GET_ROOM = gql`
     }
   }
 `
+
+export const GET_ROOM_CALLING = gql`
+  query Query($roomId: String!) {
+    getRoomCalling(roomID: $roomId)
+  }
+`

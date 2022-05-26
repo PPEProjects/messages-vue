@@ -21,6 +21,8 @@
       </svg>
     </div>
 
+    <call-bar />
+
   </div>
 
 </template>
