@@ -26,6 +26,7 @@ export default {
     {src: '@/plugins/touch-emulator', ssr: false},
     {src: '@/plugins/anime', ssr: false},
     {src: '@/plugins/jitsi', ssr: false},
+    {src: '@/plugins/recall', ssr: false},
     '@/plugins/axios',
     {src: '~/plugins/lottie.js', ssr: false},
     {src: '~/plugins/observe-visibility.js', ssr: false},

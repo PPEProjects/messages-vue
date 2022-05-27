@@ -13,6 +13,7 @@ export const GET_INBOXS = gql`
         }
         content
         createdAt
+        isRecall
         readAt {
           user {
             id
@@ -33,6 +34,7 @@ export const GET_INBOXS = gql`
           userID
           avatar
         }
+        isRecall
         readAt {
           user {
             id
@@ -53,6 +55,7 @@ export const GET_INBOXS = gql`
           userID
           avatar
         }
+        isRecall
         readAt {
           user {
             id

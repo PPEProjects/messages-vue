@@ -13,6 +13,7 @@ type File {
     file: String!
     from: User!
     id: ID!
+    isRecall: Boolean!
     license: License!
     readAt: [ReadAt!]!
     room: Room!
@@ -23,6 +24,7 @@ type Image {
     from: User!
     id: ID!
     images: [String!]!
+    isRecall: Boolean!
     license: License!
     readAt: [ReadAt!]!
     room: Room!
@@ -46,6 +48,7 @@ type Message {
     createdAt: Float!
     from: User!
     id: ID!
+    isRecall: Boolean!
     license: License!
     readAt: [ReadAt!]!
     room: Room!
@@ -58,6 +61,7 @@ type Mutation {
     messageRead(input: ReadMessageInput!): [Message!]!
     messageSend(input: CreateMessageInput!, roomId: String!): Message!
     noteCreate(input: CreateNoteInput!, roomId: String!): Note!
+    removeInbox(group: String!, id: String!): ResultUnion!
     roomAdd(input: AddToRoomInput!): Room!
     "Sẽ xoá trong các version sau"
     roomCreate(input: CreateRoomInput!): Room!
@@ -78,6 +82,7 @@ type Note {
     createdAt: Float!
     from: User!
     id: ID!
+    isRecall: Boolean!
     license: License!
     note: String!
     readAt: [ReadAt!]!
@@ -85,6 +90,7 @@ type Note {
 }
 
 type Query {
+    getRoomCalling(roomID: String!): [String!]!
     getRooms(input: GetRoomsInput!): [Room!]!
     inboxsGet(filter: GetInboxsInput!): [ResultUnion!]!
     messagesByRoom(filter: GetMessagesInput!): [Message!]!
@@ -107,11 +113,6 @@ type Room {
     users: [User!]!
 }
 
-type RoomMessages {
-    messages: [Message!]!
-    room: Room!
-}
-
 type RoomOnlines {
     onlines: [String!]!
     room: Room!
@@ -121,10 +122,13 @@ type Subscription {
     connect(input: CreateConnectInput!): User!
     roomOnlines(roomID: String!, userID: String!): RoomOnlines!
     roomSub(roomID: String!, userID: String!): Room!
-    subMyRooms(userID: String!): RoomMessages!
+    subCalling(roomID: String!, userID: String!): [String!]!
+    subCallingRooms(roomID: String!): [String!]!
+    subMyRooms(userID: String!): Room!
     subNewInbox(userID: String!): Inbox!
     subNewInboxByRoom(roomID: String!, userID: String!): ResultUnion!
     subUserOnline(userID: String!): UserOnline!
+    subWaitingCall(userID: String!): Room!
 }
 
 type Token {
@@ -241,6 +245,7 @@ input KickRoomInput {
 input ReadMessageInput {
     "Điểm neo"
     anchor: String!
+    room: String!
     "ID người đọc"
     userID: String!
 }

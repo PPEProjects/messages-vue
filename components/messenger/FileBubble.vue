@@ -1,17 +1,29 @@
 <template>
-  <div class="file-bubble text-[13px] bubble-content">
+  <div
+    class="file-bubble text-[13px] bubble-content !px-4 relative"
+    :class="{
+      'audio': isAudio,
+      'video': isVideo
+    }"
+  >
 
-<!--    <template v-if="['wav'].includes(fileExtention)">
-      <audio controls>
-        <source :src="file" :type="'audio/' + fileExtention">
-      </audio>
-    </template>-->
+    <audio v-if="isAudio && showPlayer" controls>
+      <source :src="file" :type="'audio/' + fileExtention">
+    </audio>
 
-    <div @click="download">
+    <video v-else-if="isVideo && showPlayer" controls>
+      <source :src="file" :type="'video/' + fileExtention">
+    </video>
+
+    <div v-else @click="download">
       <van-icon name="volume-o" class="mr-1" />
       <span class="file-name">{{ fileName }}</span>
       <slot name="prefix"></slot>
     </div>
+
+
+    <bubble-remove :inbox="inbox" type="files" class="top-0" />
+
   </div>
 </template>
 
@@ -19,13 +31,22 @@
 export default {
   name: "FileBubble",
   props: {
-    file: {
-      type: String,
-      required: true
+    inbox: {
+      type: Object,
+      default: () => {}
     },
     downloadEnabled: {
       type: Boolean,
       default: true
+    },
+    showPlayer: {
+      type: Boolean,
+      default: true
+    }
+  },
+  data() {
+    return {
+      file: this.inbox.file
     }
   },
   computed: {
@@ -34,6 +55,12 @@ export default {
     },
     fileExtention() {
       return this.fileName.split('.')[this.fileName.split('.').length - 1]
+    },
+    isAudio() {
+      return ['wav', 'mp3', 'm4a'].includes(this.fileExtention)
+    },
+    isVideo() {
+      return ['mp4'].includes(this.fileExtention)
     }
   },
   methods: {

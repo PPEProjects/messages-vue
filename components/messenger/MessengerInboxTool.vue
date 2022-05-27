@@ -53,7 +53,7 @@ v-else-if="imagesAttached" class="w-[18px] h-[18px] relative" :disabled="files.l
             <div class="ml-auto" style="width: 70px; height: 70px"></div>
           </div>
 
-          <file-bubble v-else class="relative" :file="files[0].name" :download-enabled="false">
+          <file-bubble v-else class="relative" :file="files[0].name" :download-enabled="false" :show-player="false">
 
             <template #prefix>
               <button

@@ -48,3 +48,22 @@ export const SUB_INBOX_BY_ROOM = gql`
     }
   }
 `
+
+export const SUB_UPDATING_INBOX = gql`
+  subscription SubUpdatingInbox($roomId: String!) {
+    subUpdatingInbox(roomID: $roomId) {
+      ... on Message {
+        id
+        isRecall
+      }
+      ... on Image {
+        id
+        isRecall
+      }
+      ... on File {
+        id
+        isRecall
+      }
+    }
+  }
+`

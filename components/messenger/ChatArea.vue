@@ -17,15 +17,24 @@
       >
         <message-bubble :inbox="inbox">
 
-          <template v-if="inbox.content">
-            <div class="text-[13px] bubble-content">
-              {{ inbox.content }}
-            </div>
-          </template>
+          <div v-if="inbox.isRecall" class="text-[13px] bubble-content italic opacity-60">
+            Message has been recalled
+          </div>
 
-          <images-bubble v-else-if="inbox.images" :images="inbox.images" />
+          <div v-else>
+            <template v-if="inbox.content">
+              <div class="text-[13px] bubble-content relative">
+                {{ inbox.content }}
 
-          <file-bubble v-else-if="inbox.file" :file="inbox.file" />
+                <bubble-remove :inbox="inbox" type="message" class="top-0" />
+
+              </div>
+            </template>
+
+            <images-bubble v-else-if="inbox.images" :inbox="inbox" />
+
+            <file-bubble v-else-if="inbox.file" :inbox="inbox" />
+          </div>
 
         </message-bubble>
       </div>
@@ -156,7 +165,7 @@ export default {
       } catch (e) {}
       this.$nuxt.$loading.finish()
       this.isLoading = false
-    },
+    }
 
   }
 }
