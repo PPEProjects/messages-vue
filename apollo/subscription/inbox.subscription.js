@@ -13,6 +13,7 @@ export const SUB_INBOX_BY_ROOM = gql`
         }
         content
         createdAt
+        isRecall
         readAt {
           user {
             id
@@ -27,6 +28,7 @@ export const SUB_INBOX_BY_ROOM = gql`
         id
         images
         createdAt
+        isRecall
         from {
           id
           name
@@ -38,6 +40,7 @@ export const SUB_INBOX_BY_ROOM = gql`
         id
         file
         createdAt
+        isRecall
         from {
           id
           name
