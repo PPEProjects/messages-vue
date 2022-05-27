@@ -35,6 +35,10 @@ export default {
       type: Object,
       default: () => {}
     },
+    file: {
+      type: String,
+      required: true
+    },
     downloadEnabled: {
       type: Boolean,
       default: true
@@ -42,11 +46,6 @@ export default {
     showPlayer: {
       type: Boolean,
       default: true
-    }
-  },
-  data() {
-    return {
-      file: this.inbox.file
     }
   },
   computed: {

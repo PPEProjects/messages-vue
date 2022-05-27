@@ -33,7 +33,7 @@
 
             <images-bubble v-else-if="inbox.images" :inbox="inbox" />
 
-            <file-bubble v-else-if="inbox.file" :inbox="inbox" />
+            <file-bubble v-else-if="inbox.file" :inbox="inbox" :file="inbox.file" />
           </div>
 
         </message-bubble>
