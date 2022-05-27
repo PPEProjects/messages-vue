@@ -13,6 +13,7 @@ export const SUB_INBOX_BY_ROOM = gql`
         }
         content
         createdAt
+        isRecall
         readAt {
           user {
             id
@@ -27,6 +28,7 @@ export const SUB_INBOX_BY_ROOM = gql`
         id
         images
         createdAt
+        isRecall
         from {
           id
           name
@@ -38,12 +40,32 @@ export const SUB_INBOX_BY_ROOM = gql`
         id
         file
         createdAt
+        isRecall
         from {
           id
           name
           userID
           avatar
         }
+      }
+    }
+  }
+`
+
+export const SUB_UPDATING_INBOX = gql`
+  subscription SubUpdatingInbox($roomId: String!) {
+    subUpdatingInbox(roomID: $roomId) {
+      ... on Message {
+        id
+        isRecall
+      }
+      ... on Image {
+        id
+        isRecall
+      }
+      ... on File {
+        id
+        isRecall
       }
     }
   }

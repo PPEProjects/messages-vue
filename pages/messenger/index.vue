@@ -23,16 +23,19 @@
 import {mapActions, mapGetters} from "vuex";
 import {SUB_ROOM_CALLING, SUB_USER_ONLINE} from "~/apollo/subscription/room.subscription";
 import {GET_ROOM, GET_ROOM_CALLING} from "~/apollo/queries/room.queries";
+import {SUB_UPDATING_INBOX} from "~/apollo/subscription/inbox.subscription";
 
 export default {
   name: "MessengerRoom",
   data() {
     return {
-      isLoading: false
+      isLoading: false,
+      showReCall: false
     }
   },
   computed: {
-    ...mapGetters('user', ['user'])
+    ...mapGetters('user', ['user']),
+    ...mapGetters('room', ['inboxs'])
   },
   beforeDestroy() {
     this.$store.dispatch("room/setInboxs", [])
@@ -68,6 +71,19 @@ export default {
           // Let's update the local data
           this.setCalling(data.subCallingRooms)
         },
+      },
+      subUpdatingInbox: {
+        query: SUB_UPDATING_INBOX,
+        variables() {
+          return {
+            roomId: this.$route.params.id
+          }
+        },
+        manual: true,
+        result ({ data, loading }) {
+          !loading && this.updateInbox(data.subUpdatingInbox)
+        },
+        fetchPolicy: 'no-cache'
       }
     },
     getRoomCalling: {
@@ -104,6 +120,18 @@ export default {
         await this.$store.dispatch('room/setRoom', data.roomGet)
 
       } catch (e) {}
+    },
+
+    async updateInbox(e) {
+      const _mess = [...this.inboxs]
+
+      for (let i = 0; i < _mess.length; i++) {
+        if(_mess[i].id === e.id) {
+          _mess[i] = Object.assign({}, _mess[i], { isRecall: true })
+          await this.$store.dispatch('room/setInboxs', _mess)
+          break
+        }
+      }
     }
   }
 }

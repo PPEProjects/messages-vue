@@ -32,9 +32,13 @@
         </span>
 
           </div>
-          <p class="line-clamp-2 text-gray-500 text-sm">
+          <p class="line-clamp-2 text-sm">
 
-            <template v-if="inbox.content">
+          <template v-if="inbox.isRecall">
+            Message has been recalled
+          </template>
+
+            <template v-else-if="inbox.content">
               {{ inbox.content }}
             </template>
 

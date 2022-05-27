@@ -46,3 +46,22 @@ export const UPSERT_USERS = gql `
     }
   }
 `
+
+export const RECALL_INBOX = gql `
+  mutation RemoveInbox($removeInboxId: String!, $group: String!) {
+    removeInbox(id: $removeInboxId, group: $group) {
+      ... on Message {
+        id
+        isRecall
+      }
+      ... on Image {
+        id
+        isRecall
+      }
+      ... on File {
+        id
+        isRecall
+      }
+    }
+  }
+`

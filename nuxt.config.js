@@ -23,8 +23,10 @@ export default {
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
     {src: '@/plugins/vant', ssr: true},
+    {src: '@/plugins/touch-emulator', ssr: false},
     {src: '@/plugins/anime', ssr: false},
     {src: '@/plugins/jitsi', ssr: false},
+    {src: '@/plugins/recall', ssr: false},
     '@/plugins/axios',
     {src: '~/plugins/lottie.js', ssr: false},
     {src: '~/plugins/observe-visibility.js', ssr: false},
