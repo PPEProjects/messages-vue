@@ -18,7 +18,9 @@
         <message-bubble :inbox="inbox">
 
           <template v-if="inbox.content">
-            {{ inbox.content }}
+            <div class="text-[13px] bubble-content">
+              {{ inbox.content }}
+            </div>
           </template>
 
           <images-bubble v-else-if="inbox.images" :images="inbox.images" />

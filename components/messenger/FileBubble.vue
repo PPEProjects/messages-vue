@@ -1,5 +1,5 @@
 <template>
-  <div class="file-bubble px-0.5">
+  <div class="file-bubble text-[13px] bubble-content">
 
 <!--    <template v-if="['wav'].includes(fileExtention)">
       <audio controls>

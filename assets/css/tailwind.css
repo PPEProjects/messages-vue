@@ -17,3 +17,7 @@ svg {
 .animate {
   @apply transition duration-300 ease-in-out
 }
+
+.bubble-content {
+  @apply bg-[#f4f7fb] px-2.5 rounded-xl py-2.5 relative cursor-pointer text-gray-700
+}

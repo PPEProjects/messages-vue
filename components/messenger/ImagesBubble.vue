@@ -1,10 +1,12 @@
 <template>
   <div
-    class="images-bubble"
+    ref="container"
+    class="images-bubble bubble-content grid"
     :class="{
-      _grid_4: images.length >= 4,
-      _grid_3: images.length === 3,
-      _grid_2: images.length === 2
+      _4: images.length >= 4,
+      _3: images.length === 3,
+      _2: images.length === 2,
+      _1: images.length === 1
     }"
   >
     <div v-for="(image, index) in images" :key="index">

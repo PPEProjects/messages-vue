@@ -55,30 +55,6 @@ button.ant-btn-sm > svg {
 .chat-item._images:not(._file) .bubble-content {
   padding: 10px;
 }
-.images-bubble._grid_4 {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-gap: 10px;
-}
-.images-bubble._grid_3 {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-gap: 10px;
-}
-.chat-item._images._images_grid_3, .chat-item._images._images_grid_2 {
-  width: calc(75% + 30px);
-  margin-left: calc(25% - 30px);
-}
-
-.images-bubble._grid_2 {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  grid-gap: 10px;
-}
-.chat-item._images._images_grid_1 {
-  width: calc(50%);
-  margin-left: calc(50%);
-}
 
 #messageInput .file-bubble .file-name {
   font-size: 13px;
@@ -98,4 +74,48 @@ button.ant-btn-sm > svg {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+
+
+.images-bubble._4 {
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 15px;
+}
+
+.images-bubble._3 {
+  grid-template-columns: repeat(3, 1fr);
+  width: calc(100% * 3 / 4);
+  grid-gap: 15px;
+}
+
+.images-bubble._3 {
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 15px;
+  margin-left: calc((100% / 4) - 30px);
+}
+.images-bubble._2 {
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 15px;
+  margin-left: calc((100% / 2) - 70px);
+}
+
+.images-bubble._1 {
+  margin-left: 60%;
+}
+
+
+@media screen and (max-width: 680px) {
+  .images-bubble._1 {
+    margin-left: 35%;
+  }
+
+  .images-bubble._2 {
+    margin-left:calc((100% / 4) - 30px)
+  }
+  .images-bubble._3 {
+    margin-left: 0;
+  }
+  .images-bubble._4 {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
