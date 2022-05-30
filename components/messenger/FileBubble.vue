@@ -16,7 +16,8 @@
     </video>
 
     <div v-else @click="download">
-      <van-icon name="volume-o" class="mr-1" />
+      <van-icon v-if="isAudio" name="volume-o" class="mr-1" />
+      <van-icon v-else name="orders-o" />
       <span class="file-name">{{ fileName }}</span>
       <slot name="prefix"></slot>
     </div>
@@ -60,6 +61,9 @@ export default {
     },
     isVideo() {
       return ['mp4'].includes(this.fileExtention)
+    },
+    isDocument() {
+      return ['csv', 'ppt', 'pptx', 'xls', 'xlsx', 'doc', 'docx', 'pdf', 'gif', 'potx', 'txt', 'xlt'].includes(this.fileExtention)
     }
   },
   methods: {
