@@ -6,7 +6,7 @@
     <div class="flex">
 
       <div ref="avatarRef">
-        <avatar-border :avatar="room.avatar" class="relative flex-shrink-0" :onlines="onlines.length" />
+        <avatar-border :avatar="romAvatar" class="relative flex-shrink-0" :onlines="onlines.length" />
       </div>
 
       <div
@@ -107,6 +107,18 @@ export default {
         return this.room.users[_index === 0 ? 1 : 0].name
       } else {
         return 'Group ' + this.room.users.length + ' members'
+      }
+    },
+    romAvatar() {
+      if(this.room.avatar) {
+        return this.room.avatar
+      } else if (this.room.users.length === 1) {
+        return this.room.users[0].avatar
+      } else if(this.room.users.length === 2) {
+        const _index = this.room.users.findIndex((e) => String(e.userID) === String(this.user.id))
+        return this.room.users[_index === 0 ? 1 : 0].avatar
+      } else {
+        return ''
       }
     }
   },
